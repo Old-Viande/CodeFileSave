@@ -440,8 +440,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cube: {fileID: 3818933047710265144, guid: e29d0bd1653d95446aa716be770f93e5, type: 3}
-  x: 5
-  z: 5
+  weith: 5
+  height: 5
   celllong: 7
   Position: {x: 0, y: 0, z: 0}
   layerMask:
@@ -450,6 +450,7 @@ MonoBehaviour:
   camera: {fileID: 1761201377}
   check: 0
   cameraMove: {fileID: 895958625}
+  wallType: 0
 --- !u!114 &895958624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -485,7 +486,7 @@ MonoBehaviour:
   arreyz: 0
   height: 15
   contral: {fileID: 895958621}
-  radius: 7
+  radius: 20
   direction: 0
   speed: 6
 --- !u!1 &963194225
@@ -721,7 +722,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1571341156}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.58, y: 0, z: -6.12}
+  m_LocalPosition: {x: -13.55, y: 0, z: -14.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

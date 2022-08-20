@@ -30,13 +30,13 @@ public class CameraMove :MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            if (arreyx < GridCreate.Instance.x - 1)
+            if (arreyx < GridCreate.Instance.weith - 1)
             {
                 arreyx++;
             }
             else
             {
-                arreyx = GridCreate.Instance.x - 1;
+                arreyx = GridCreate.Instance.weith - 1;
             }
 
         }
@@ -54,13 +54,13 @@ public class CameraMove :MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
-            if (arreyz < GridCreate.Instance.z - 1)
+            if (arreyz < GridCreate.Instance.height - 1)
             {
                 arreyz++;
             }
             else
             {
-                arreyz = GridCreate.Instance.z - 1;
+                arreyz = GridCreate.Instance.height - 1;
             }
         }
         else if (Input.GetKeyDown(KeyCode.S))
