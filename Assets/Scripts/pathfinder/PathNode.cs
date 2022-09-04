@@ -7,7 +7,7 @@ public class PathNode
     private Gridmap<PathNode> grid;
     public int x;
     public int z;
-    public bool canWalk =false;
+    public bool canWalk =true;
 
 
     public int g;//从起点到当前位置距离

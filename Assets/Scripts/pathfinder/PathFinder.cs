@@ -27,18 +27,59 @@ public Gridmap<PathNode> GetGrid()
         PathNode endNode = grid.GetValue(endX, endZ);
         openNodes = new List<PathNode> { startNode };
         closedNodes = new List<PathNode>();
-
-        for(int x = 0; x < grid.GetWidth(); x++)
+    
+        if (grid.GetWidth() > 0&&grid.GetHeight()>0)
         {
-            for (int z = 0; z < grid.GetHeight(); z++)
+            for (int x = 0; x < grid.GetWidth(); x++)
             {
-                PathNode pathNode = grid.GetValue(x, z);
-                pathNode.g = int.MaxValue;
-                pathNode.Getf();
-                pathNode.lastNode = null;
+                for (int z = 0; z < grid.GetHeight(); z++)
+                {
+                    PathNode pathNode = grid.GetValue(x, z);
+                    pathNode.g = int.MaxValue;
+                    pathNode.Getf();
+                    pathNode.lastNode = null;
+                }
             }
         }
-
+        else if (grid.GetWidth() > 0 && grid.GetHeight() < 0)
+        {
+            for (int x = 0; x < grid.GetWidth(); x++)
+            {
+                for (int z = -1; z > grid.GetHeight()-1; z--)
+                {
+                    PathNode pathNode = grid.GetValue(x, z);
+                    pathNode.g = int.MaxValue;
+                    pathNode.Getf();
+                    pathNode.lastNode = null;
+                }
+            }
+        }
+        else if (grid.GetWidth() < 0 && grid.GetHeight() < 0)
+        {
+            for (int x = -1; x > grid.GetWidth()-1; x--)
+            {
+                for (int z = -1; z > grid.GetHeight()-1; z--)
+                {
+                    PathNode pathNode = grid.GetValue(x, z);
+                    pathNode.g = int.MaxValue;
+                    pathNode.Getf();
+                    pathNode.lastNode = null;
+                }
+            }
+        }
+        else if (grid.GetWidth() < 0 && grid.GetHeight() > 0)
+        {
+            for (int x = -1; x > grid.GetWidth()-1; x--)
+            {
+                for (int z = 0; z < grid.GetHeight(); z++)
+                {
+                    PathNode pathNode = grid.GetValue(x, z);
+                    pathNode.g = int.MaxValue;
+                    pathNode.Getf();
+                    pathNode.lastNode = null;
+                }
+            }
+        }
         startNode.g = 0;
         startNode.h = GetDistanceCost(startNode,endNode);
         startNode.Getf();
@@ -74,7 +115,7 @@ public Gridmap<PathNode> GetGrid()
                 }
             }            
         }
-        return null;
+        return new List<PathNode>();
     }
 
     private void WalkCheck(int x, int z, ref List<PathNode> aroundList)
