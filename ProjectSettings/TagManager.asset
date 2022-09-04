@@ -8,7 +8,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - RayCheck
+  - TagCheck
   - Water
   - UI
   - 
