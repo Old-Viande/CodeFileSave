@@ -6,7 +6,7 @@ public class Enemy_SO : ScriptableObject
 {
     
        public List<Enemy> enemies = new List<Enemy>();
-    public Dictionary<string, Enemy> enemySave = new Dictionary<string, Enemy>();
+    public Dictionary<string, Character> enemySave = new Dictionary<string, Character>();
 #if UNITY_EDITOR
     void OnValidate()
     {

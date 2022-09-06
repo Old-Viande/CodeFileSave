@@ -7,7 +7,7 @@ public class Character
 
     public string UID;
 
-    [HideInInspector]
+    //[HideInInspector]
 	public float hp;
 
 	public float maxHp;
@@ -18,7 +18,7 @@ public class Character
 
     public float defense;
 
-    [HideInInspector]
+    //[HideInInspector]
 	public int actionPoint;
 
 	public int maxActionPoint;
@@ -26,6 +26,8 @@ public class Character
     public bool isPlayer;
 
     public int attackRange;
+
+    public int moveSpeed;
 
     public GameObject Item;
 

@@ -7,6 +7,7 @@ public class GridManager :Singleton<GridManager>
     public Gridmap<GameObject> gridmap;
     public Gridmap<GameObject> smap;
     public PathFinder pathFinder;
+    public PathFinder pathFinderTest;
     public int width;
     public int height;
     public int celllong;
@@ -31,6 +32,7 @@ public class GridManager :Singleton<GridManager>
         minY = height * celllong;
         roomcell = 1;
         pathFinder = new PathFinder(minX, minY, roomcell);
+        pathFinderTest = new PathFinder(minX, minY, roomcell);
         smap = new Gridmap<GameObject>(minX, minY, roomcell, origenPoint, Out);
         
     }
@@ -45,8 +47,8 @@ public class GridManager :Singleton<GridManager>
     public void Update()
     {
         Vector3 save;
-        
-       Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+
+        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         if (Input.GetMouseButtonDown(0))
         {
             Debug.DrawLine(ray.origin, ray.direction * 100 + ray.origin, Color.red, 100f);
@@ -55,44 +57,45 @@ public class GridManager :Singleton<GridManager>
             {
                 Debug.DrawLine(ray.origin, ray.direction * 100 + ray.origin, Color.red, 100f);
                 RaycastHit hit;
-               
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                    Debug.Log(hit.collider.name);
                 //smap.GetGridXZ(character.transform.position, out int pX, out int Pz);
-                if (canClick)
-                {
-                    if (smap.GetValue(pX, pZ) != null)
-                    {
-                        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-                        {
-                            smap.GetGridXZ(hit.collider.transform.position, out int hitX, out int hitZ);
+                //if (canClick)
+                //{
+                //    if (smap.GetValue(pX, pZ) != null)
+                //    {
+                //        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                //        {
+                //            smap.GetGridXZ(hit.collider.transform.position, out int hitX, out int hitZ);
+                //            Debug.Log(hit.collider.name);
+                //            Debug.Log("hit " + hitX + " ," + hitZ + " !");
+                //            Vector3 cell = hit.collider.transform.position;
+                //            smap.GetGridXZ(cell, out int endX, out int endZ);
+                //            List<PathNode> path = pathFinder.FindPath(pX, pZ, endX, endZ);
+                //            TimeCountDown.Instance.AddClock(10f, false, "tset");
+                //            MoveVelocity.Instance.SetMoveData(width, height, 7, character, path, endX, endZ);
+                //            canClick = false;
+                //        }
+                //    }
+                //}
 
-                            Debug.Log("hit " + hitX + " ," + hitZ + " !");
-                            Vector3 cell = hit.collider.transform.position;
-                            smap.GetGridXZ(cell, out int endX, out int endZ);
-                            List<PathNode> path = pathFinder.FindPath(pX, pZ, endX, endZ);
-                            TimeCountDown.Instance.AddClock(10f, false, "tset");
-                            MoveVelocity.Instance.SetMoveData(width, height, 7, character, path,endX,endZ);
-                            canClick = false;
-                        }
-                    }
-                }
+                //if (Physics.Raycast(ray, out hit, Mathf.Infinity, (int)layerMask))
+                //{
+                //    if (hit.collider.tag == "Player")
+                //    {
+                //        character = hit.collider.gameObject;
+                //        save = hit.collider.transform.position;
+                //        smap.GetGridXZ(save, out pX, out pZ);
+                //        canClick = true;
+                //    }
 
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, (int)layerMask))
-                {
-                    if (hit.collider.tag == "Player")
-                    {
-                        character = hit.collider.gameObject;
-                        save = hit.collider.transform.position;
-                        smap.GetGridXZ(save, out pX, out pZ);
-                        canClick = true;
-                    }
-
-                }
+                //}
 
             }
         }
         if (TimeCountDown.Instance.clocks.ToArray().Length != 0)
         {
-        Debug.Log(Mathf.CeilToInt(TimeCountDown.Instance.clocks[0]) + " this is list and in Grid ");
+            Debug.Log(Mathf.CeilToInt(TimeCountDown.Instance.clocks[0]) + " this is list and in Grid ");
         }
     }
 }

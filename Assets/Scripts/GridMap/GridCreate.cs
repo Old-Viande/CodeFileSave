@@ -71,7 +71,7 @@ public class GridCreate : MonoBehaviour
                             smap.GetGridXZ(cell, out int endX, out int endZ);
                             List<PathNode> path = pathFinder.FindPath(pX, pZ, endX, endZ);
                             TimeCountDown.Instance.AddClock(10f, false, "tset");
-                            MoveVelocity.Instance.SetMoveData(width, height, 7, character, path, endX, endZ);
+                            //MoveVelocity.Instance.SetMoveData(character, path, endX, endZ);
                             canClick = false;
                         }
                     }

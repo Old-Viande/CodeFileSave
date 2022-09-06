@@ -24,7 +24,7 @@ public Gridmap<PathNode> GetGrid()
     public List<PathNode> FindPath(int startX, int startZ, int endX, int endZ) //传入开始点的网格坐标以及目标点的网格坐标
     {
         PathNode startNode = grid.GetValue(startX, startZ);
-        PathNode endNode = grid.GetValue(endX, endZ);
+        PathNode endNode = grid.GetValue(endX, endZ);       
         openNodes = new List<PathNode> { startNode };
         closedNodes = new List<PathNode>();
     
@@ -153,6 +153,33 @@ public Gridmap<PathNode> GetGrid()
         return aroundList;
     }
 
+    public List<PathNode> CheckAroundNodes(PathNode currentnode)//循环当前节点周围的节点,找出该节点周围的可以行走的点位
+                                                            //ctrl+h 替换
+    {
+        List<PathNode> aroundList = new List<PathNode>();
+        if (currentnode.x - 1 >= 0)
+        {
+            WalkCheck(currentnode.x - 1, currentnode.z, ref aroundList);
+            if (currentnode.z - 1 >= 0) WalkCheck(currentnode.x - 1, currentnode.z - 1, ref aroundList);
+            // Left Up
+            if (currentnode.z + 1 < grid.GetHeight()) WalkCheck(currentnode.x - 1, currentnode.z + 1, ref aroundList);
+        }
+        if (currentnode.x + 1 < grid.GetWidth())
+        {
+            // Right
+            WalkCheck(currentnode.x + 1, currentnode.z, ref aroundList);
+            // Right Down
+            if (currentnode.z - 1 >= 0) WalkCheck(currentnode.x + 1, currentnode.z - 1, ref aroundList);
+            // Right Up
+            if (currentnode.z + 1 < grid.GetHeight()) WalkCheck(currentnode.x + 1, currentnode.z + 1, ref aroundList);
+        }
+        // Up
+        if (currentnode.z + 1 < grid.GetWidth()) WalkCheck(currentnode.x, currentnode.z + 1, ref aroundList);
+        // Down
+        if (currentnode.z - 1 >= 0) WalkCheck(currentnode.x, currentnode.z - 1, ref aroundList);
+        return aroundList;
+    }
+
     public PathNode GetNode(int x,int z)
     {
         return grid.GetValue(x, z);
@@ -179,7 +206,7 @@ public Gridmap<PathNode> GetGrid()
         return MOVE_DIAGONAL_COST * Mathf.Min(xDistance, zDistance) + MOVE_STRAIGHT_COST * remaining;
     }
 
-    private PathNode GetCurrentNode(List<PathNode> pathnodelist)//找出当前节点，也就是F最小的那个点
+    public PathNode GetCurrentNode(List<PathNode> pathnodelist)//找出当前节点，也就是F最小的那个点
     {
         PathNode lowestF = pathnodelist[0];
         for(int i = 0; i < pathnodelist.Count; i++)

@@ -6,7 +6,7 @@ public class Character_SO :ScriptableObject
 {
 
        public List<Player> characters = new List<Player>();
-    public Dictionary<string, Player> playerSave = new Dictionary<string, Player>();
+    public Dictionary<string, Character> playerSave = new Dictionary<string, Character>();
 
 #if UNITY_EDITOR
     void OnValidate()
