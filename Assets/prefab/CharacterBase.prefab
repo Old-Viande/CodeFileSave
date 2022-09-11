@@ -195,11 +195,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4e335d2a8f118945ad674edc448631c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character:
+  unit:
     name: 
-    characterId: 0
+    UID: 
+    hp: 0
+    maxHp: 0
     speed: 0
+    attack: 0
+    defense: 0
+    actionPoint: 0
+    maxActionPoint: 0
+    isPlayer: 0
+    attackRange: 0
+    moveSpeed: 0
     Item: {fileID: 0}
+    currentState: 0
+  player:
+    name: 
+    UID: 
+    hp: 0
+    maxHp: 0
+    speed: 0
+    attack: 0
+    defense: 0
+    actionPoint: 0
+    maxActionPoint: 0
+    isPlayer: 0
+    attackRange: 0
+    moveSpeed: 0
+    Item: {fileID: 0}
+    currentState: 0
     mask: {fileID: 0}
     mainWeapon:
       weaponName: 

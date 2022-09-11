@@ -1,5 +1,5 @@
 {
-    "m_SGVersion": 3,
+    "m_SGVersion": 2,
     "m_Type": "UnityEditor.ShaderGraph.GraphData",
     "m_ObjectId": "036fe11aeb304901a0e17a1335205a36",
     "m_Properties": [
@@ -26,12 +26,6 @@
         }
     ],
     "m_Keywords": [],
-    "m_Dropdowns": [],
-    "m_CategoryData": [
-        {
-            "m_Id": "a21f7e6a4a9f4a62b52fdcd3f52881f7"
-        }
-    ],
     "m_Nodes": [
         {
             "m_Id": "ff8e0fe5fb464d91a8e4c9d11393073f"
@@ -528,11 +522,10 @@
         "serializedMesh": {
             "m_SerializedMesh": "{\"mesh\":{\"instanceID\":0}}",
             "m_Guid": ""
-        },
-        "preventRotation": false
+        }
     },
     "m_Path": "Shader Graphs",
-    "m_GraphPrecision": 0,
+    "m_ConcretePrecision": 0,
     "m_PreviewMode": 2,
     "m_OutputNode": {
         "m_Id": ""
@@ -1570,13 +1563,9 @@
         "m_GuidSerialized": "994203ee-1232-4b0f-9c3b-600d61b722dd"
     },
     "m_Name": "Toon Ramp Tinting",
-    "m_DefaultRefNameVersion": 0,
-    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Color_566e5b665c4a40cd838b45afa20b381e",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -1587,7 +1576,6 @@
         "b": 0.7452830076217651,
         "a": 0.0
     },
-    "isMainColor": false,
     "m_ColorMode": 0
 }
 
@@ -1721,13 +1709,9 @@
         "m_GuidSerialized": "c480de9a-ad97-4c7c-afa8-e9a277e938e3"
     },
     "m_Name": "Toon Ramp Smoothness",
-    "m_DefaultRefNameVersion": 0,
-    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_5b555a2ee7084ce0a21ce4607a62de27",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -2009,13 +1993,9 @@
         "m_GuidSerialized": "7c02a86b-a85f-473a-8ce6-92711a2a9c68"
     },
     "m_Name": "RimPower",
-    "m_DefaultRefNameVersion": 0,
-    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_67f9b47c3e8c4c349be662b0ba6d467b",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -2167,13 +2147,9 @@
         "m_GuidSerialized": "4552f831-31fd-420c-9659-3c315a85773a"
     },
     "m_Name": "light",
-    "m_DefaultRefNameVersion": 0,
-    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_7919a1c18f084037b855b18126ce3b6f",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -2509,8 +2485,7 @@
         "m_SerializableColors": []
     },
     "m_TextureType": 0,
-    "m_NormalMapSpace": 0,
-    "m_EnableGlobalMipBias": true
+    "m_NormalMapSpace": 0
 }
 
 {
@@ -2794,36 +2769,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
-    "m_ObjectId": "a21f7e6a4a9f4a62b52fdcd3f52881f7",
-    "m_Name": "",
-    "m_ChildObjectList": [
-        {
-            "m_Id": "5b555a2ee7084ce0a21ce4607a62de27"
-        },
-        {
-            "m_Id": "566e5b665c4a40cd838b45afa20b381e"
-        },
-        {
-            "m_Id": "cd8ae4c7089c45859d984417d27c12b5"
-        },
-        {
-            "m_Id": "e06c8f2aa23448fa91b078edc818d8fb"
-        },
-        {
-            "m_Id": "67f9b47c3e8c4c349be662b0ba6d467b"
-        },
-        {
-            "m_Id": "dfc1020ecdd34c5499063c9914bd480c"
-        },
-        {
-            "m_Id": "7919a1c18f084037b855b18126ce3b6f"
-        }
-    ]
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "a3f6a57dc0284605be44693243189322",
     "m_Id": 0,
@@ -2915,8 +2860,7 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     },
-    "m_Space": 2,
-    "m_PositionSource": 0
+    "m_Space": 2
 }
 
 {
@@ -3101,13 +3045,9 @@
         "m_GuidSerialized": "cb54f539-b267-441d-b6e8-bc7c34a7b1b5"
     },
     "m_Name": "Toon Ramp Offset",
-    "m_DefaultRefNameVersion": 0,
-    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_cd8ae4c7089c45859d984417d27c12b5",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -3241,13 +3181,9 @@
         "m_GuidSerialized": "1088badf-710b-460a-83a2-854d4fc6fce0"
     },
     "m_Name": "Rim Light",
-    "m_DefaultRefNameVersion": 0,
-    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_dfc1020ecdd34c5499063c9914bd480c",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -3268,13 +3204,9 @@
         "m_GuidSerialized": "3ba1605e-a09b-4b3a-b3b0-735a85ba9cfe"
     },
     "m_Name": "Main Texture",
-    "m_DefaultRefNameVersion": 0,
-    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Texture2D_e06c8f2aa23448fa91b078edc818d8fb",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -3283,8 +3215,6 @@
         "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
         "m_Guid": ""
     },
-    "isMainTexture": false,
-    "useTilingAndOffset": false,
     "m_Modifiable": true,
     "m_DefaultType": 0
 }
@@ -3319,8 +3249,7 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     },
-    "m_Space": 2,
-    "m_PositionSource": 0
+    "m_Space": 2
 }
 
 {
@@ -3609,23 +3538,17 @@
 }
 
 {
-    "m_SGVersion": 1,
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalTarget",
     "m_ObjectId": "fa403556507043e3912a4232f849357d",
     "m_ActiveSubTarget": {
         "m_Id": "959a8f005ee44ca7bfd45d351cff7143"
     },
-    "m_AllowMaterialOverride": false,
     "m_SurfaceType": 0,
-    "m_ZTestMode": 4,
-    "m_ZWriteControl": 0,
     "m_AlphaMode": 0,
-    "m_RenderFace": 2,
+    "m_TwoSided": false,
     "m_AlphaClip": false,
-    "m_CastShadows": true,
-    "m_ReceiveShadows": true,
-    "m_CustomEditorGUI": "",
-    "m_SupportVFX": false
+    "m_CustomEditorGUI": ""
 }
 
 {

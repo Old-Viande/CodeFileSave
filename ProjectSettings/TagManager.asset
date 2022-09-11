@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - enemy
+  - floor
+  - RayCamera
+  - door
   layers:
   - Default
   - TransparentFX
@@ -11,7 +15,7 @@ TagManager:
   - TagCheck
   - Water
   - UI
-  - 
+  - RayCheck
   - 
   - 
   - 
