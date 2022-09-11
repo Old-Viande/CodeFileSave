@@ -6,82 +6,91 @@ using UnityEngine;
 public class PathFinder
 {
     private const int MOVE_STRAIGHT_COST = 10;//const 是常量
-    private const int MOVE_DIAGONAL_COST = 14;   
+    private const int MOVE_DIAGONAL_COST = 14;
     public Gridmap<PathNode> grid;
     private List<PathNode> openNodes;
     private List<PathNode> closedNodes;
- 
- public PathFinder(int width,int height,float celllong = 1f,Vector3 worldPosition = default)//此处是构造函数
+
+    public PathFinder(int maxwidth, int maxheight, int minwidth, int minheight, float celllong = 1f, Vector3 worldPosition = default)//此处是构造函数
     {
-       
-        grid = new Gridmap<PathNode>(width, height, celllong, worldPosition,  delegate (Gridmap<PathNode> grid, int x, int z) { return new PathNode(grid, x, z); }); //委托是一个函数的简写
+
+        grid = new Gridmap<PathNode>( maxwidth,  maxheight,  minwidth,  minheight, celllong, worldPosition, delegate (Gridmap<PathNode> grid, int x, int z) { return new PathNode(grid, x, z); }); //委托是一个函数的简写
     }
-    
-public Gridmap<PathNode> GetGrid()
+
+    public Gridmap<PathNode> GetGrid()
     {
         return grid;
     }
     public List<PathNode> FindPath(int startX, int startZ, int endX, int endZ) //传入开始点的网格坐标以及目标点的网格坐标
     {
         PathNode startNode = grid.GetValue(startX, startZ);
-        PathNode endNode = grid.GetValue(endX, endZ);       
+        PathNode endNode = grid.GetValue(endX, endZ);
         openNodes = new List<PathNode> { startNode };
         closedNodes = new List<PathNode>();
-    
-        if (grid.GetWidth() > 0&&grid.GetHeight()>0)
+
+        /* if (grid.GetWidth() > 0&&grid.GetHeight()>0)
+         {
+             for (int x = 0; x < grid.GetWidth(); x++)
+             {
+                 for (int z = 0; z < grid.GetHeight(); z++)
+                 {
+                     PathNode pathNode = grid.GetValue(x, z);
+                     pathNode.g = int.MaxValue;
+                     pathNode.Getf();
+                     pathNode.lastNode = null;
+                 }
+             }
+         }
+         else if (grid.GetWidth() > 0 && grid.GetHeight() < 0)
+         {
+             for (int x = 0; x < grid.GetWidth(); x++)
+             {
+                 for (int z = -1; z > grid.GetHeight()-1; z--)
+                 {
+                     PathNode pathNode = grid.GetValue(x, z);
+                     pathNode.g = int.MaxValue;
+                     pathNode.Getf();
+                     pathNode.lastNode = null;
+                 }
+             }
+         }
+         else if (grid.GetWidth() < 0 && grid.GetHeight() < 0)
+         {
+             for (int x = -1; x > grid.GetWidth()-1; x--)
+             {
+                 for (int z = -1; z > grid.GetHeight()-1; z--)
+                 {
+                     PathNode pathNode = grid.GetValue(x, z);
+                     pathNode.g = int.MaxValue;
+                     pathNode.Getf();
+                     pathNode.lastNode = null;
+                 }
+             }
+         }
+         else if (grid.GetWidth() < 0 && grid.GetHeight() > 0)
+         {
+             for (int x = -1; x > grid.GetWidth()-1; x--)
+             {
+                 for (int z = 0; z < grid.GetHeight(); z++)
+                 {
+                     PathNode pathNode = grid.GetValue(x, z);
+                     pathNode.g = int.MaxValue;
+                     pathNode.Getf();
+                     pathNode.lastNode = null;
+                 }
+             }
+         }*/
+
+        foreach (var a in GetGrid().gridDictionary)
         {
-            for (int x = 0; x < grid.GetWidth(); x++)
-            {
-                for (int z = 0; z < grid.GetHeight(); z++)
-                {
-                    PathNode pathNode = grid.GetValue(x, z);
-                    pathNode.g = int.MaxValue;
-                    pathNode.Getf();
-                    pathNode.lastNode = null;
-                }
-            }
+            PathNode pathNode = grid.GetValue(a.Value.x, a.Value.z);
+            pathNode.g = int.MaxValue;
+            pathNode.Getf();
+            pathNode.lastNode = null;
         }
-        else if (grid.GetWidth() > 0 && grid.GetHeight() < 0)
-        {
-            for (int x = 0; x < grid.GetWidth(); x++)
-            {
-                for (int z = -1; z > grid.GetHeight()-1; z--)
-                {
-                    PathNode pathNode = grid.GetValue(x, z);
-                    pathNode.g = int.MaxValue;
-                    pathNode.Getf();
-                    pathNode.lastNode = null;
-                }
-            }
-        }
-        else if (grid.GetWidth() < 0 && grid.GetHeight() < 0)
-        {
-            for (int x = -1; x > grid.GetWidth()-1; x--)
-            {
-                for (int z = -1; z > grid.GetHeight()-1; z--)
-                {
-                    PathNode pathNode = grid.GetValue(x, z);
-                    pathNode.g = int.MaxValue;
-                    pathNode.Getf();
-                    pathNode.lastNode = null;
-                }
-            }
-        }
-        else if (grid.GetWidth() < 0 && grid.GetHeight() > 0)
-        {
-            for (int x = -1; x > grid.GetWidth()-1; x--)
-            {
-                for (int z = 0; z < grid.GetHeight(); z++)
-                {
-                    PathNode pathNode = grid.GetValue(x, z);
-                    pathNode.g = int.MaxValue;
-                    pathNode.Getf();
-                    pathNode.lastNode = null;
-                }
-            }
-        }
+
         startNode.g = 0;
-        startNode.h = GetDistanceCost(startNode,endNode);
+        startNode.h = GetDistanceCost(startNode, endNode);
         startNode.Getf();
 
 
@@ -96,7 +105,7 @@ public Gridmap<PathNode> GetGrid()
             openNodes.Remove(currentNode);
             closedNodes.Add(currentNode);
 
-            foreach(PathNode aroundNode in AroundNodes(currentNode))//检测周围的节点
+            foreach (PathNode aroundNode in AroundNodes(currentNode))//检测周围的节点
             {
                 if (closedNodes.Contains(aroundNode)) continue;
                 if (!aroundNode.canWalk) continue;
@@ -113,7 +122,7 @@ public Gridmap<PathNode> GetGrid()
                         openNodes.Add(aroundNode);
                     }
                 }
-            }            
+            }
         }
         return new List<PathNode>();
     }
@@ -121,66 +130,83 @@ public Gridmap<PathNode> GetGrid()
     private void WalkCheck(int x, int z, ref List<PathNode> aroundList)
     {
         PathNode node = GetNode(x, z);
-        if (node.canWalk)
+        if (node != null)
         {
-            aroundList.Add(node);
+            if (node.canWalk)
+            {
+                aroundList.Add(node);
+            }
         }
+
     }
-    private List<PathNode> AroundNodes(PathNode currentnode)//循环当前节点周围的节点
-        //ctrl+h 替换
+    /* private List<PathNode> AroundNodes(PathNode currentnode)//循环当前节点周围的节点   这里未及时升级！！！！ 需要尽快修正
+         //ctrl+h 替换
+     {
+         List<PathNode> aroundList = new List<PathNode>();
+         if (currentnode.x - 1 >= 0)
+         {
+             WalkCheck(currentnode.x - 1, currentnode.z, ref aroundList);
+             if (currentnode.z - 1 >= 0) WalkCheck(currentnode.x - 1, currentnode.z - 1, ref aroundList);
+             // Left Up
+             if (currentnode.z + 1 < grid.GetHeight()) WalkCheck(currentnode.x - 1, currentnode.z + 1, ref aroundList);
+         }
+         if (currentnode.x + 1 < grid.GetWidth())
+         {
+             // Right
+             WalkCheck(currentnode.x + 1, currentnode.z, ref aroundList);
+             // Right Down
+             if (currentnode.z - 1 >= 0) WalkCheck(currentnode.x + 1, currentnode.z - 1, ref aroundList);
+             // Right Up
+             if (currentnode.z + 1 < grid.GetHeight()) WalkCheck(currentnode.x + 1, currentnode.z + 1, ref aroundList);
+         }
+         // Up
+         if (currentnode.z + 1 < grid.GetWidth()) WalkCheck(currentnode.x, currentnode.z + 1, ref aroundList);
+         // Down
+         if (currentnode.z - 1 >= 0) WalkCheck(currentnode.x, currentnode.z - 1, ref aroundList);
+         return aroundList;
+     }*/
+    private List<PathNode> AroundNodes(PathNode currentnode)// 新版本寻路节点                                                          
     {
         List<PathNode> aroundList = new List<PathNode>();
-        if (currentnode.x - 1 >= 0)
-        {
-            WalkCheck(currentnode.x - 1, currentnode.z, ref aroundList);
-            if (currentnode.z - 1 >= 0) WalkCheck(currentnode.x - 1, currentnode.z - 1, ref aroundList);
-            // Left Up
-            if (currentnode.z + 1 < grid.GetHeight()) WalkCheck(currentnode.x - 1, currentnode.z + 1, ref aroundList);
-        }
-        if (currentnode.x + 1 < grid.GetWidth())
-        {
-            // Right
-            WalkCheck(currentnode.x + 1, currentnode.z, ref aroundList);
-            // Right Down
-            if (currentnode.z - 1 >= 0) WalkCheck(currentnode.x + 1, currentnode.z - 1, ref aroundList);
-            // Right Up
-            if (currentnode.z + 1 < grid.GetHeight()) WalkCheck(currentnode.x + 1, currentnode.z + 1, ref aroundList);
-        }
+        WalkCheck(currentnode.x - 1, currentnode.z, ref aroundList);
+        WalkCheck(currentnode.x - 1, currentnode.z - 1, ref aroundList);
+        WalkCheck(currentnode.x - 1, currentnode.z + 1, ref aroundList);
+        // Right
+        WalkCheck(currentnode.x + 1, currentnode.z, ref aroundList);
+        // Right Down
+        WalkCheck(currentnode.x + 1, currentnode.z - 1, ref aroundList);
+        // Right Up
+        WalkCheck(currentnode.x + 1, currentnode.z + 1, ref aroundList);
+
         // Up
-        if (currentnode.z + 1 < grid.GetWidth()) WalkCheck(currentnode.x, currentnode.z + 1, ref aroundList);
+        WalkCheck(currentnode.x, currentnode.z + 1, ref aroundList);
         // Down
-        if (currentnode.z - 1 >= 0) WalkCheck(currentnode.x, currentnode.z - 1, ref aroundList);
+        WalkCheck(currentnode.x, currentnode.z - 1, ref aroundList);
         return aroundList;
     }
 
     public List<PathNode> CheckAroundNodes(PathNode currentnode)//循环当前节点周围的节点,找出该节点周围的可以行走的点位
-                                                            //ctrl+h 替换
+                                                                //ctrl+h 替换
     {
         List<PathNode> aroundList = new List<PathNode>();
-        if (currentnode.x - 1 >= 0)
-        {
-            WalkCheck(currentnode.x - 1, currentnode.z, ref aroundList);
-            if (currentnode.z - 1 >= 0) WalkCheck(currentnode.x - 1, currentnode.z - 1, ref aroundList);
-            // Left Up
-            if (currentnode.z + 1 < grid.GetHeight()) WalkCheck(currentnode.x - 1, currentnode.z + 1, ref aroundList);
-        }
-        if (currentnode.x + 1 < grid.GetWidth())
-        {
-            // Right
-            WalkCheck(currentnode.x + 1, currentnode.z, ref aroundList);
-            // Right Down
-            if (currentnode.z - 1 >= 0) WalkCheck(currentnode.x + 1, currentnode.z - 1, ref aroundList);
-            // Right Up
-            if (currentnode.z + 1 < grid.GetHeight()) WalkCheck(currentnode.x + 1, currentnode.z + 1, ref aroundList);
-        }
+        WalkCheck(currentnode.x - 1, currentnode.z, ref aroundList);
+        WalkCheck(currentnode.x - 1, currentnode.z - 1, ref aroundList);
+        WalkCheck(currentnode.x - 1, currentnode.z + 1, ref aroundList);
+        // Right
+        WalkCheck(currentnode.x + 1, currentnode.z, ref aroundList);
+        // Right Down
+        WalkCheck(currentnode.x + 1, currentnode.z - 1, ref aroundList);
+        // Right Up
+        WalkCheck(currentnode.x + 1, currentnode.z + 1, ref aroundList);
+
         // Up
-        if (currentnode.z + 1 < grid.GetWidth()) WalkCheck(currentnode.x, currentnode.z + 1, ref aroundList);
+        WalkCheck(currentnode.x, currentnode.z + 1, ref aroundList);
         // Down
-        if (currentnode.z - 1 >= 0) WalkCheck(currentnode.x, currentnode.z - 1, ref aroundList);
+        WalkCheck(currentnode.x, currentnode.z - 1, ref aroundList);
         return aroundList;
     }
 
-    public PathNode GetNode(int x,int z)
+    public PathNode GetNode(int x, int z)
     {
         return grid.GetValue(x, z);
     }
@@ -198,7 +224,7 @@ public Gridmap<PathNode> GetGrid()
         return path;
     }
 
-    private int GetDistanceCost(PathNode a,PathNode b)//这一段是在算距离花费
+    private int GetDistanceCost(PathNode a, PathNode b)//这一段是在算距离花费
     {
         int xDistance = Mathf.Abs(a.x - b.x);
         int zDistance = Mathf.Abs(a.z - b.z);
@@ -209,7 +235,7 @@ public Gridmap<PathNode> GetGrid()
     public PathNode GetCurrentNode(List<PathNode> pathnodelist)//找出当前节点，也就是F最小的那个点
     {
         PathNode lowestF = pathnodelist[0];
-        for(int i = 0; i < pathnodelist.Count; i++)
+        for (int i = 0; i < pathnodelist.Count; i++)
         {
             if (pathnodelist[i].f < lowestF.f)
             {
@@ -218,5 +244,5 @@ public Gridmap<PathNode> GetGrid()
         }
         return lowestF;
     }
-    
+
 }

@@ -14,14 +14,16 @@ public class PlayerData : CharacterData
     ///private string name;
     void Start()
     {
-
-        GridManager.Instance.characterData.playerSave.TryGetValue(this.name, out unit);
+        Character tampSave;
+        DataSave.Instance.tempPlayerSave.TryGetValue(this.name, out unit);      
+        //GridManager.Instance.characterData.playerSave.TryGetValue(this.name, out unit);
         unit.actionPoint = unit.maxActionPoint;
         unit.hp = unit.maxHp;
         if (unit != null)
         {
             //DataSave.Instance.players.Add(this.gameObject);
             CreateManager.Instance.AddObj(this.name, this);
+            DataSave.Instance.currentPlayers.Add(this.name, this);
         }
         player = (Player)unit;
     }
@@ -31,7 +33,7 @@ public class PlayerData : CharacterData
         {
             //DataSave.Instance.players.Remove(this.gameObject);
             CreateManager.Instance.RemoveObj(this.name);
-
+            DataSave.Instance.currentPlayers.Remove(this.name);
         }
     }
 
@@ -44,8 +46,8 @@ public class PlayerData : CharacterData
             return false;
         }
 
-        GridManager.Instance.smap.GetGridXZ(this.transform.position, out int x1, out int z1);
-        GridManager.Instance.smap.GetGridXZ(target.transform.position, out int x2, out int z2);
+        GridManager.Instance.stepGrid.GetGridXZ(this.transform.position, out int x1, out int z1);
+        GridManager.Instance.stepGrid.GetGridXZ(target.transform.position, out int x2, out int z2);
         if (GridManager.Instance.pathFinder.GetGrid().GetValue(x2, z2).canWalk)
         {
             nodeListCount = GridManager.Instance.pathFinder.FindPath(x1, z1, x2, z2).Count;
@@ -86,8 +88,8 @@ public class PlayerData : CharacterData
         {
             return false;
         }
-        GridManager.Instance.smap.GetGridXZ(this.transform.position, out int x1, out int z1);
-        GridManager.Instance.smap.GetGridXZ(target.transform.position, out int x2, out int z2);
+        GridManager.Instance.stepGrid.GetGridXZ(this.transform.position, out int x1, out int z1);
+        GridManager.Instance.stepGrid.GetGridXZ(target.transform.position, out int x2, out int z2);
         int nodeListCount = GridManager.Instance.pathFinderTest.FindPath(x1, z1, x2, z2).Count;//用测试网格进行路径检索
         if (nodeListCount <= unit.actionPoint * unit.moveSpeed + 1)
         {

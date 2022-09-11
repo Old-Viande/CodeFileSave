@@ -3,27 +3,70 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DataSave : Singleton<DataSave>
-{
-    //public List<GameObject> players = new List<GameObject>();
-    //public List<GameObject> enemies = new List<GameObject>();
-    //public List<GameObject> characters = new List<GameObject>();
-    //public List<Player> players = new List<Player>();
-    //public List<Enemy> enemies = new List<Enemy>();
-    //public List<Character> characters = new List<Character>();
-    public List<CharacterData> valueSave = new List<CharacterData>();//存入的是场上实例
-    public List<string> keySave = new List<string>();//
-    public Dictionary<string, Player> currentPlayers = new Dictionary<string, Player>();
+{/// <summary>
+/// tempPlayers和tempEnemys都是对SO数据的深拷贝
+/// </summary>
+    public List<Player> tempPlayers = new List<Player>();
+    public Dictionary<string, Character> tempPlayerSave = new Dictionary<string, Character>();
+    public List<Enemy> tempEnemies = new List<Enemy>();
+    public Dictionary<string, Character> tempEnemySave = new Dictionary<string, Character>();
+
+    public List<CharacterData> valueSave = new List<CharacterData>();//存入的是场上实例的每回合排序，
+    public List<string> keySave = new List<string>();//存入的是场上实例的名称每回合排序
+    /// <summary>
+    /// 用于存储场上现有可控单位的字典
+    /// </summary>
+    public Dictionary<string, PlayerData> currentPlayers = new Dictionary<string, PlayerData>();
     //public Player currentPlayer;
     public GameObject currentObj, targetObj;
     public Dictionary<string, GameObject> objSave = new Dictionary<string, GameObject>();
     public GameObject mark;
     public float height;
-    public static T InDeepCopy<T>(T obj)//从SO文件深拷贝数据
+    public static T DeepCopy<T>(T obj)//从SO文件深拷贝数据
     {
         string json = JsonUtility.ToJson(obj);
         T targetData = JsonUtility.FromJson<T>(json);
         return targetData;
     }
+   private void Start()
+    {
+        Player Psave;
+        Enemy Esave;
+        for (int i = 0; i < GridManager.Instance.characterData.characters.Count; i++)
+        {
+           Psave= DeepCopy<Player>(GridManager.Instance.characterData.characters[i]);
+            tempPlayers.Add(Psave);
+            tempPlayerSave.Add(Psave.name, Psave);
+        }
+
+        for (int i = 0; i < GridManager.Instance.enemyData.enemies.Count; i++)
+        {
+            Esave = DeepCopy<Enemy>(GridManager.Instance.enemyData.enemies[i]);
+            tempEnemies.Add(Esave);
+            tempEnemySave.Add(Esave.name, Esave);
+        }
+   
+    }
+
+    public void SaveSoData()
+    {
+        Player Psave;
+        Enemy Esave;
+        for (int i = 0; i < GridManager.Instance.characterData.characters.Count; i++)
+        {
+            Psave = DeepCopy<Player>(GridManager.Instance.characterData.characters[i]);
+            tempPlayers.Add(Psave);
+            tempPlayerSave.Add(Psave.name, Psave);
+        }
+
+        for (int i = 0; i < GridManager.Instance.enemyData.enemies.Count; i++)
+        {
+            Esave = DeepCopy<Enemy>(GridManager.Instance.enemyData.enemies[i]);
+            tempEnemies.Add(Esave);
+            tempEnemySave.Add(Esave.name, Esave);
+        }
+    }
+
     public void AddObject(string name,GameObject obj)
     {
         objSave.Add(name, obj);
@@ -162,7 +205,8 @@ public class DataSave : Singleton<DataSave>
                 }
             }
         }
-        
+        valueSave.Reverse();
+        keySave.Reverse();
     }
     private void Update()
     {

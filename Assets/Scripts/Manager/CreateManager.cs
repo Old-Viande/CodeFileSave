@@ -15,13 +15,16 @@ public class CreateManager : Singleton<CreateManager>
 
     void Start()
     {
-       player = Instantiate(characters.characters[0].Item, Vector3.zero, Quaternion.identity);
-       player.name = characters.characters[0].name;
+        player = Instantiate(characters.characters[0].Item, GridManager.Instance.stepGrid.GetGridCenter(-1, -1), Quaternion.identity);       
+        GridManager.Instance.pathFinder.GetGrid().GetValue(-1, -1).canWalk = false;
+        //player = Instantiate(characters.characters[0].Item, GridManager.Instance.stepGrid.GetGridCenter(1, 1), Quaternion.identity);
+        //GridManager.Instance.pathFinder.GetGrid().GetValue(1, 1).canWalk = false;
+        player.name = characters.characters[0].name;
         DataSave.Instance.AddObject(player.name, player);
-        enemy.Add(Instantiate(enemies.enemies[0].Item, GridManager.Instance.smap.GetGridCenter(11, 10), Quaternion.identity));
+        /*enemy.Add(Instantiate(enemies.enemies[0].Item, GridManager.Instance.stepGrid.GetGridCenter(11, 10), Quaternion.identity));
         enemy[0].name = enemies.enemies[0].name;
         DataSave.Instance.AddObject(enemy[0].name, enemy[0]);
-        GridManager.Instance.pathFinder.GetGrid().GetValue(11,10).canWalk = false;
+        GridManager.Instance.pathFinder.GetGrid().GetValue(11,10).canWalk = false;*/
        
 
     }
@@ -35,16 +38,16 @@ public class CreateManager : Singleton<CreateManager>
     }
 
 
-   /* public void AddObject(GameObject item,Vector3 position)//调用时需要在调用处更改物体的名称
+   public void CreateItem(GameObject item,Vector3 position)//调用时需要在调用处更改物体的名称
     {
         items.Add(item);
         Instantiate(item, position, Quaternion.identity);        
     }
-    public void RemoveObject(GameObject item)
+    public void RemoveItem(GameObject item)
     {
         items.Remove(item);
         Destroy(item);
-    }*/
+    }
 
     // Update is called once per frame
     void Update()

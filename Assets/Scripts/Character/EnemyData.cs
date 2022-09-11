@@ -19,7 +19,8 @@ public class EnemyData : CharacterData
         {
             if (this.name.Contains(a.name))
             {
-                GridManager.Instance.enemyData.enemySave.TryGetValue(a.name, out unit);
+                DataSave.Instance.tempEnemySave.TryGetValue(a.name, out unit);
+                //GridManager.Instance.enemyData.enemySave.TryGetValue(a.name, out unit);
                 unit.actionPoint = unit.maxActionPoint;
                 unit.hp = unit.maxHp;
             }
@@ -48,8 +49,8 @@ public class EnemyData : CharacterData
             return false;
         }
 
-        GridManager.Instance.smap.GetGridXZ(this.transform.position, out int x1, out int z1);
-        GridManager.Instance.smap.GetGridXZ(target.transform.position, out int x2, out int z2);
+        GridManager.Instance.stepGrid.GetGridXZ(this.transform.position, out int x1, out int z1);
+        GridManager.Instance.stepGrid.GetGridXZ(target.transform.position, out int x2, out int z2);
         int nodeListCount = GridManager.Instance.pathFinder.FindPath(x1, z1, x2, z2).Count;
 
         // 判定两者间寻路距离是否小于等于敌人单位的攻击距离
@@ -102,8 +103,8 @@ public class EnemyData : CharacterData
         {
             return false;
         }
-        GridManager.Instance.smap.GetGridXZ(this.transform.position, out int x1, out int z1);
-        GridManager.Instance.smap.GetGridXZ(target.transform.position, out int x2, out int z2);
+        GridManager.Instance.stepGrid.GetGridXZ(this.transform.position, out int x1, out int z1);
+        GridManager.Instance.stepGrid.GetGridXZ(target.transform.position, out int x2, out int z2);
         int nodeListCount = GridManager.Instance.pathFinder.FindPath(x1, z1, x2, z2).Count;
 
         if (GridManager.Instance.pathFinder.GetGrid().GetValue(x2, z2).canWalk)

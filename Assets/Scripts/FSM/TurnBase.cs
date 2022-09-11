@@ -15,6 +15,7 @@ public class StartState : IState
     }
     public void OnUpdata()
     {
+        //DataSave.Instance.SaveSoData();
         DataSave.Instance.SaveData();
         manager.TranState(StateType.Running);
     }
@@ -46,27 +47,27 @@ public class RuningState : IState
         {
             currentCharacter = characters[0].unit;
 
-            CharacterData tempCharacters = characters[0];
+            //CharacterData tempCharacters = characters[0];
             characters.Remove(characters[0]);
-
-            if (currentCharacter.hp > 0)
-            {
-                currentCharacter.actionPoint = currentCharacter.maxActionPoint;//将被移除单位的行动值恢复满
-                  characters.Add(tempCharacters);//这段逻辑经过断点测试确实生效
-            }
+            //队列里的可操控单位执行过行为后，先移除，然后再重新加入队列              
+            //if (currentCharacter.hp > 0)
+            //{
+            //    currentCharacter.actionPoint = currentCharacter.maxActionPoint;//将被移除单位的行动值恢复满
+            //    characters.Add(tempCharacters);//这段逻辑经过断点测试确实生效
+            //}
         }
-       
+
     }
     public void OnUpdata()
     {
         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
         if (characters != null)
-        {
-            if (characters[index].tag!="enemy")//检测是否这个单位是可控制单位
+        {//如果不为空
+            DataSave.Instance.currentObj = characters[index].gameObject;
+            if (characters[index].unit is Player)//检测是否这个单位是可控制单位
             {             
                              //这里要判断玩家的选择，并且传相应的参数到对应的状态
-                             //队列里的可操控单位执行过行为后，先移除，然后再重新加入队列           
-                DataSave.Instance.objSave.TryGetValue(characters[index].name, out DataSave.Instance.currentObj);
+                              
                 DataSave.Instance.currentObj.GetComponent<PlayerData>().unit.currentState = Character.State.Idle;
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -76,7 +77,7 @@ public class RuningState : IState
                 if (Input.GetMouseButtonDown(0))
                 {
                     RaycastHit hit;
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity,GridManager.Instance.layerMask))
                     {
                         if (hit.collider.tag == "enemy")
                         {
@@ -97,15 +98,15 @@ public class RuningState : IState
 
                             //manager.TranState(StateType.Attack);
                         }
-                        else if (hit.collider.tag == "floor")
+                        else if (hit.collider.tag == "floor"|| hit.collider.tag == "door")
                         {
                             DataSave.Instance.targetObj = hit.collider.gameObject;
-                            if (DataSave.Instance.currentObj.GetComponent<PlayerData>().CheckMove(DataSave.Instance.targetObj, out canMove))
-                            {
+                          // if (DataSave.Instance.currentObj.GetComponent<PlayerData>().CheckMove(DataSave.Instance.targetObj, out canMove))
+                           // {
                                 DataSave.Instance.currentObj.GetComponent<PlayerData>().unit.currentState = Character.State.Move;
                                 manager.TranState(StateType.Move);
 
-                            }
+                          // }
                         }
                     }
                 }
@@ -184,7 +185,7 @@ public class AttackState : IState
        //存    Player -> 保Character   如果不（player）回来就找不到player的数值，但是以Character保存不会丢失数据
        //如果碰到了不知道Character是 player 还是enemy的情况，    if（character  is Player）判断是不是 或者 is Enemy 
             float attack, defence;
-            defence = DataSave.Instance.targetObj.GetComponent<PlayerData>().unit.defense;
+            defence = DataSave.Instance.targetObj.GetComponent<PlayerData>().unit.defense; 
             attack = DataSave.Instance.currentObj.GetComponent<EnemyData>().unit.attack;
 
             DataSave.Instance.targetObj.GetComponent<PlayerData>().unit.hp -= (attack - defence);
@@ -232,8 +233,8 @@ public class MoveState : IState
             }
         }
        
-        GridManager.Instance.smap.GetGridXZ(DataSave.Instance.currentObj.transform.position, out int x1, out int z1);
-        GridManager.Instance.smap.GetGridXZ(DataSave.Instance.targetObj.transform.position, out x2, out z2);
+        GridManager.Instance.stepGrid.GetGridXZ(DataSave.Instance.currentObj.transform.position, out int x1, out int z1);
+        GridManager.Instance.stepGrid.GetGridXZ(DataSave.Instance.targetObj.transform.position, out x2, out z2);
    
         if (GridManager.Instance.pathFinder.GetGrid().GetValue(x2, z2).canWalk)//如果输入的最终坐标是不可行走的，则用测试寻路网格找到通往这个坐标的路径，然后停在抵达目标的点之前
         {
