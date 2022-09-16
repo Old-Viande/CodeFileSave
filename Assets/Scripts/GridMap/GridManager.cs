@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class GridManager : Singleton<GridManager>
 {
-    public Gridmap<GameObject> roomGrid;//房间格
-    public Gridmap<GameObject> stepGrid;//行走格
+    public Gridmap<GameObject> roomGridmap;//房间格，网格内着生成的房间
+    public Gridmap<GameObject> stepGrid;//行走格，应当储存家具以及场上行走的单位
+    public Gridmap<GameObject> roomCell;//仅用来矫正生成房间内家具的网格
     public PathFinder pathFinder;
     public PathFinder pathFinderTest;
     public int maxWidth;
@@ -13,6 +14,7 @@ public class GridManager : Singleton<GridManager>
     public int maxHeight;
     public int minHeight;
     public int celllong;
+    public float roomdepth;
     //private int x, z;
     public int pathFinderlong;
     public Vector3 origenPoint;
@@ -30,7 +32,7 @@ public class GridManager : Singleton<GridManager>
     //private bool canClick =false;
     private void Start()
     {
-        roomGrid = new Gridmap<GameObject>(maxWidth, maxHeight, minWidth, minHeight, celllong, origenPoint, Outdo);
+        roomGridmap = new Gridmap<GameObject>(maxWidth, maxHeight, minWidth, minHeight, celllong, origenPoint, Outdo);
 
         minX = minWidth * celllong;
         minY = minHeight * celllong;
@@ -40,11 +42,17 @@ public class GridManager : Singleton<GridManager>
         pathFinder = new PathFinder(maxX, maxY, minX, minY, roomcell, origenPoint);
         pathFinderTest = new PathFinder(maxX, maxY, minX, minY, roomcell, origenPoint);
         stepGrid = new Gridmap<GameObject>(maxX, maxY, minX, minY, roomcell, origenPoint, Out);
+       /* for (int i = 0; i < 20; i++)
+        {
+            int randomnumber = Random.RandomRange(0, 100);
+            Debug.Log(randomnumber+" ");
+        }*/
+       
 
     }
     public GameObject Outdo(Gridmap<GameObject> grid, int x, int z)
     {
-        return Instantiate(room, grid.GetGridCenter(x, z) + Vector3.down * 0.55f, Quaternion.identity);
+        return Instantiate(room, grid.GetGridCenter(x, z), Quaternion.identity);
     }
     public GameObject Out(Gridmap<GameObject> grid, int x, int z)
     {
@@ -78,7 +86,7 @@ public class GridManager : Singleton<GridManager>
     {
         foreach (var item in DataSave.Instance.currentPlayers)
         {
-            roomGrid.GetGridXZ(item.Value.gameObject.transform.position, out int x, out int z);//取得角色所在的房间格
+            roomGridmap.GetGridXZ(item.Value.gameObject.transform.position, out int x, out int z);//取得角色所在的房间格
             CheckDoor(x, z);
             foreach (var a in doorSave)
             {
@@ -90,31 +98,36 @@ public class GridManager : Singleton<GridManager>
                     switch (a.Key)//检测踩入的门格是什么方向的
                     {
                         case "forward":
-                            if (roomGrid.GetValue(x, z + 1) == null)
+                            if (roomGridmap.GetValue(x, z + 1) == null)
                             {
-                                roomGrid.SetValue(x, z + 1, Instantiate(room, roomGrid.GetGridCenter(x, z + 1) + Vector3.down * 0.55f, Quaternion.identity));
+                                roomGridmap.SetValue(x, z + 1, Instantiate(room, roomGridmap.GetGridCenter(x, z + 1) , Quaternion.identity));//要将生成的物体存入网格内
                                 RoomToStep(x, z + 1);
+                                RoomBuild.Instance.CreateGrid(roomGridmap.GetWorldPosition(x, z + 1));
                             }
                             break;
                         case "left":
-                            if (roomGrid.GetValue(x - 1, z) == null)
+                            if (roomGridmap.GetValue(x - 1, z) == null)
                             {
-                                roomGrid.SetValue(x - 1, z, Instantiate(room, roomGrid.GetGridCenter(x - 1, z) + Vector3.down * 0.55f, Quaternion.identity));
+                                roomGridmap.SetValue(x - 1, z, Instantiate(room, roomGridmap.GetGridCenter(x - 1, z) , Quaternion.identity));
                                 RoomToStep(x - 1, z);
+                                RoomBuild.Instance.CreateGrid(roomGridmap.GetWorldPosition(x - 1, z));
                             }
                             break;
                         case "right":
-                            if (roomGrid.GetValue(x + 1, z) == null)
+                            if (roomGridmap.GetValue(x + 1, z) == null)
                             {
-                                roomGrid.SetValue(x + 1, z, Instantiate(room, roomGrid.GetGridCenter(x + 1, z) + Vector3.down * 0.55f, Quaternion.identity));
+                                roomGridmap.SetValue(x + 1, z, Instantiate(room, roomGridmap.GetGridCenter(x + 1, z), Quaternion.identity));
                                 RoomToStep(x + 1, z);
+                                RoomBuild.Instance.CreateGrid(roomGridmap.GetWorldPosition(x + 1, z));
                             }
                             break;
                         case "back":
-                            if (roomGrid.GetValue(x, z - 1) == null)
+                            if (roomGridmap.GetValue(x, z - 1) == null)
                             {
-                                roomGrid.SetValue(x, z - 1, Instantiate(room, roomGrid.GetGridCenter(x, z - 1) + Vector3.down * 0.55f, Quaternion.identity));
+                                //roomGrid.SetValue(x, z - 1, Instantiate(room, roomGrid.GetGridCenter(x, z - 1) + Vector3.down * 0.55f, Quaternion.identity));
+                                roomGridmap.SetValue(x, z - 1, Instantiate(room, roomGridmap.GetGridCenter(x, z - 1), Quaternion.identity));
                                 RoomToStep(x, z - 1);
+                                RoomBuild.Instance.CreateGrid(roomGridmap.GetWorldPosition(x, z - 1));
                             }
                             break;
                     }
@@ -126,7 +139,7 @@ public class GridManager : Singleton<GridManager>
     }
     public void RoomToStep(int gx, int gz)
     {
-        roomGrid.GetGridRangePoints(gx, gz, out int maxX, out int minX, out int maxZ, out int minZ);
+        roomGridmap.GetGridRangePoints(gx, gz, out int maxX, out int minX, out int maxZ, out int minZ);
         GridTranslateToSmall(maxX, maxZ, out int tXx, out int tXz);
         //sx1--;
         // sz1--
@@ -147,7 +160,7 @@ public class GridManager : Singleton<GridManager>
         int maxX, minX, maxZ, minZ;
         int tampXx, tampMx, tampXz, tampMz;
         int midX, midZ;
-        roomGrid.GetGridRangePoints(x, z, out maxX, out minX, out maxZ, out minZ);//已经取出该网格坐标的格子的四个界限点
+        roomGridmap.GetGridRangePoints(x, z, out maxX, out minX, out maxZ, out minZ);//已经取出该网格坐标的格子的四个界限点
         GridTranslateToSmall(maxX, maxZ, out tampXx, out tampXz);//大网格坐标转换成小网格坐标
         tampXz--;
         tampXx--;
@@ -182,7 +195,7 @@ public class GridManager : Singleton<GridManager>
     }
     public void GridTranslateToSmall(int x, int z, out int sx, out int sz)
     {
-        stepGrid.GetGridXZ(roomGrid.GetWorldPosition(x, z), out sx, out sz);
+        stepGrid.GetGridXZ(roomGridmap.GetWorldPosition(x, z), out sx, out sz);
 
     }
 }

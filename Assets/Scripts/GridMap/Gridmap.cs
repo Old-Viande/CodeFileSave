@@ -283,7 +283,7 @@ public class Gridmap<TGridObject>
             
         
     }
-    public void SetValue(Vector3 WorldPosition, TGridObject value)
+    public void SetValue( Vector3 WorldPosition, TGridObject value)
     {
         int x, z;
         GetGridXZ(WorldPosition, out x, out z);

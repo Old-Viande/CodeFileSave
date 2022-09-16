@@ -16,10 +16,10 @@ public class DataSave : Singleton<DataSave>
     /// <summary>
     /// 用于存储场上现有可控单位的字典
     /// </summary>
-    public Dictionary<string, PlayerData> currentPlayers = new Dictionary<string, PlayerData>();
+    public Dictionary<string, PlayerData> currentPlayers = new Dictionary<string, PlayerData>();//存有场上现有的可控制玩家列表
     //public Player currentPlayer;
     public GameObject currentObj, targetObj;
-    public Dictionary<string, GameObject> objSave = new Dictionary<string, GameObject>();
+    //public Dictionary<string, GameObject> objSave = new Dictionary<string, GameObject>();
     public GameObject mark;
     public float height;
     public static T DeepCopy<T>(T obj)//从SO文件深拷贝数据
@@ -67,14 +67,14 @@ public class DataSave : Singleton<DataSave>
         }
     }
 
-    public void AddObject(string name,GameObject obj)
-    {
-        objSave.Add(name, obj);
-    }
-    public void RemovObject(string name, GameObject obj)
-    {
-        objSave.Remove(name);
-    }
+    //public void AddObject(string name,GameObject obj)
+    //{
+    //    objSave.Add(name, obj);
+    //}
+    //public void RemovObject(string name, GameObject obj)
+    //{
+    //    objSave.Remove(name);
+    //}
     public void SaveData()
     {
         string tempNaame;

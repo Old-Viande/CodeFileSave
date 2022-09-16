@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   characters:
-  - name: L
+  - name: T.o.C
     UID: p0
     hp: 5
     maxHp: 5
@@ -21,7 +21,7 @@ MonoBehaviour:
     attack: 4
     defense: 0
     actionPoint: 5
-    maxActionPoint: 5
+    maxActionPoint: 4
     isPlayer: 1
     attackRange: 1
     moveSpeed: 5

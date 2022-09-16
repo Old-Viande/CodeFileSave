@@ -37,7 +37,7 @@ public class PlayerData : CharacterData
         }
     }
 
-    public bool CheckTargetInAttackRange(GameObject target, out bool move)//此代码需要更改，玩家可以手动控制移动
+    /*public bool CheckTargetInAttackRange(GameObject target, out bool move)//此代码需要更改，玩家可以手动控制移动
     {
         move = false;
         if (unit.attackRange == 0)
@@ -80,21 +80,6 @@ public class PlayerData : CharacterData
         }
         // 判定两者间寻路距离是否小于等于玩家的攻击距离与可走格数之和      
         return false;
-    }
-    public bool CheckMove(GameObject target, out bool canMove)//这个检测是用来测试能不能走到选择的位置的,寻路的格子会连起始点一起计算，或许+1比较合适
-    {
-        canMove = false;
-        if (unit.actionPoint == 0)
-        {
-            return false;
-        }
-        GridManager.Instance.stepGrid.GetGridXZ(this.transform.position, out int x1, out int z1);
-        GridManager.Instance.stepGrid.GetGridXZ(target.transform.position, out int x2, out int z2);
-        int nodeListCount = GridManager.Instance.pathFinderTest.FindPath(x1, z1, x2, z2).Count;//用测试网格进行路径检索
-        if (nodeListCount <= unit.actionPoint * unit.moveSpeed + 1)
-        {
-            return true;
-        }
-        return false;
-    }
+    }*/
+    
 }
