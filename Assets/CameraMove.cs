@@ -84,7 +84,7 @@ public class CameraMove :MonoBehaviour
         }
         else
         {
-             lookatposition = GridManager.Instance.roomGrid.GetGridCenter(0, 0);
+             lookatposition = GridManager.Instance.roomGridmap.GetGridCenter(0, 0);
         }
        
         if (Input.GetMouseButton(1))
@@ -96,6 +96,10 @@ public class CameraMove :MonoBehaviour
             }else if(direction <= -30f)
             {
                 direction += 360f;
+            }
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                height += Input.GetAxis("Mouse Y") * speed;
             }
         }
         if (Input.GetAxis("Mouse ScrollWheel") < 0)

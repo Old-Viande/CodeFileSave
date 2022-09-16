@@ -25,6 +25,6 @@ MonoBehaviour:
     isPlayer: 0
     attackRange: 1
     moveSpeed: 5
-    Item: {fileID: 7361892216207769603, guid: 0914b2a4ca73a004bb31e792508fd50b, type: 3}
+    Item: {fileID: 6154684765145050789, guid: 5ab002d051660b34fa2fc21f1f1429a0, type: 3}
     currentState: 0
     Description: for the test

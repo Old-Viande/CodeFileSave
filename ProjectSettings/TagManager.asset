@@ -8,6 +8,8 @@ TagManager:
   - floor
   - RayCamera
   - door
+  - big
+  - BigSize
   layers:
   - Default
   - TransparentFX
