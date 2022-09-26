@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 [System.Serializable]
 public class Character
 {
@@ -41,5 +42,6 @@ public class Character
 
     public State currentState;
 
+    public List<SkillData_SO> skillSave = new List<SkillData_SO>();
 
 }

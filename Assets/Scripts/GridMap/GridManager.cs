@@ -42,12 +42,13 @@ public class GridManager : Singleton<GridManager>
         pathFinder = new PathFinder(maxX, maxY, minX, minY, roomcell, origenPoint);
         pathFinderTest = new PathFinder(maxX, maxY, minX, minY, roomcell, origenPoint);
         stepGrid = new Gridmap<GameObject>(maxX, maxY, minX, minY, roomcell, origenPoint, Out);
-       /* for (int i = 0; i < 20; i++)
-        {
-            int randomnumber = Random.RandomRange(0, 100);
-            Debug.Log(randomnumber+" ");
-        }*/
-       
+        /* for (int i = 0; i < 20; i++)
+         {
+             int randomnumber = Random.RandomRange(0, 100);
+             Debug.Log(randomnumber+" ");
+         }*/
+
+        UIManager.Instance.PushPanel(UIPanelType.OptionPanel);
 
     }
     public GameObject Outdo(Gridmap<GameObject> grid, int x, int z)

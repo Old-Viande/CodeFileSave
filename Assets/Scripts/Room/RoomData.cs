@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RoomData : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Dictionary<string, GameObject> roomItem = new Dictionary<string, GameObject>();
     void Start()
     {
         

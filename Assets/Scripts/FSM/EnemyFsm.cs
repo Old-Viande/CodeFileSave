@@ -49,7 +49,7 @@ public class EnemyAttack : IState
         float attack, defence;
         defence = DataSave.Instance.targetObj.GetComponent<PlayerData>().unit.defense;
         attack = manager.characters[0].unit.attack;
-
+        manager.characters[0].gameObject.transform.LookAt(DataSave.Instance.targetObj.transform);
         DataSave.Instance.targetObj.GetComponent<PlayerData>().unit.hp -= (attack - defence);
         //DataSave.Instance.currentObj.GetComponent<EnemyData>().unit.actionPoint--;
 
@@ -98,8 +98,10 @@ public class EnemyMove : IState
         //{
         //   Distance.Add(moveDistance[i-1]);
         //}
-
+        if(moveDistance.Count> moveDistance.Count - manager.characters[0].unit.moveSpeed) 
+        { 
         moveDistance.RemoveRange(manager.characters[0].unit.moveSpeed, moveDistance.Count-manager.characters[0].unit.moveSpeed);//范围移除List内部的索引，其中的两个数值分别是开始移除的索引数值，以及移除的总体数量
+        }
 
         MoveVelocity.Instance.SetMoveData(DataSave.Instance.currentObj, moveDistance);
     }

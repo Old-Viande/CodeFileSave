@@ -13,13 +13,28 @@ public class EnemyData : CharacterData
     private int x2, z2;
     private int nodeListCount;
     // Start is called before the first frame update
+    public static T DeepCopy<T>(T obj)//从SO文件深拷贝数据
+    {
+        string json = JsonUtility.ToJson(obj);
+        T targetData = JsonUtility.FromJson<T>(json);
+        return targetData;
+    }
     void Start()
     {
         foreach (var a in GridManager.Instance.enemyData.enemies)
         {
             if (this.name.Contains(a.name))
             {
-                DataSave.Instance.tempEnemySave.TryGetValue(a.name, out unit);
+                Character DataUnit;
+                DataSave.Instance.tempEnemySave.TryGetValue(a.name, out DataUnit);
+                //不是直接给unit，这样拿的是 引用
+                //导入json，深拷贝 json
+                unit = DeepCopy<Enemy>((Enemy)DataUnit);
+
+                //unit.hp = DataUnit.hp;
+                //unit.attack = DataUnit.attack;
+
+                //....
                 //GridManager.Instance.enemyData.enemySave.TryGetValue(a.name, out unit);
                 unit.actionPoint = unit.maxActionPoint;
                 unit.hp = unit.maxHp;

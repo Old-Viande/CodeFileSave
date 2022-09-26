@@ -1,0 +1,24 @@
+{
+	"infoList": [
+		{
+			"panelTypeString": "Start",
+			"path": "UIPanel/StartPanel"
+		},
+		{
+			"panelTypeString": "Main",
+			"path": "UIPanel/MainPanel"
+		},
+		{
+			"panelTypeString": "Setting",
+			"path": "UIPanel/SettingPanel"
+		},
+		{
+			"panelTypeString": "OptionPanel",
+			"path": "UIPanel/OptionPanel"
+		},
+		{
+			"panelTypeString": "SkillChoosePanel",
+			"path": "UIPanel/SkillChoosePanel"
+		}
+	]
+}
