@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Enemy
   m_EditorClassIdentifier: 
   enemies:
-  - name: o1
+  - name: Eyeball
     UID: e0
     hp: 5
     maxHp: 5
@@ -25,6 +25,36 @@ MonoBehaviour:
     isPlayer: 0
     attackRange: 1
     moveSpeed: 5
-    Item: {fileID: 6154684765145050789, guid: 5ab002d051660b34fa2fc21f1f1429a0, type: 3}
+    Item: {fileID: 7726280983640837676, guid: 614a7ac13d19a104e8ecf427a32551f4, type: 3}
+    currentState: 0
+    Description: for the test
+  - name: Boss
+    UID: b1
+    hp: 20
+    maxHp: 20
+    speed: 3
+    attack: 5
+    defense: 5
+    actionPoint: 3
+    maxActionPoint: 3
+    isPlayer: 0
+    attackRange: 2
+    moveSpeed: 10
+    Item: {fileID: 6414115672605557180, guid: 74cfcddbe0fc326429f12c91e2590d06, type: 3}
+    currentState: 0
+    Description: for the test
+  - name: Death
+    UID: e1
+    hp: 10
+    maxHp: 10
+    speed: 5
+    attack: 10
+    defense: 5
+    actionPoint: 2
+    maxActionPoint: 2
+    isPlayer: 0
+    attackRange: 2
+    moveSpeed: 15
+    Item: {fileID: 6414115672605557180, guid: 74cfcddbe0fc326429f12c91e2590d06, type: 3}
     currentState: 0
     Description: for the test

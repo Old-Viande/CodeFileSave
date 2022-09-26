@@ -14,7 +14,7 @@ public class PathFinder
     public PathFinder(int maxwidth, int maxheight, int minwidth, int minheight, float celllong = 1f, Vector3 worldPosition = default)//此处是构造函数
     {
 
-        grid = new Gridmap<PathNode>( maxwidth,  maxheight,  minwidth,  minheight, celllong, worldPosition, delegate (Gridmap<PathNode> grid, int x, int z) { return new PathNode(grid, x, z); }); //委托是一个函数的简写
+        grid = new Gridmap<PathNode>(maxwidth, maxheight, minwidth, minheight, celllong, worldPosition, delegate (Gridmap<PathNode> grid, int x, int z) { return new PathNode(grid, x, z); }); //委托是一个函数的简写
     }
 
     public Gridmap<PathNode> GetGrid()
@@ -169,14 +169,14 @@ public class PathFinder
     {
         List<PathNode> aroundList = new List<PathNode>();
         WalkCheck(currentnode.x - 1, currentnode.z, ref aroundList);
-        WalkCheck(currentnode.x - 1, currentnode.z - 1, ref aroundList);
-        WalkCheck(currentnode.x - 1, currentnode.z + 1, ref aroundList);
+        //WalkCheck(currentnode.x - 1, currentnode.z - 1, ref aroundList);
+        //WalkCheck(currentnode.x - 1, currentnode.z + 1, ref aroundList);
         // Right
         WalkCheck(currentnode.x + 1, currentnode.z, ref aroundList);
         // Right Down
-        WalkCheck(currentnode.x + 1, currentnode.z - 1, ref aroundList);
+        //WalkCheck(currentnode.x + 1, currentnode.z - 1, ref aroundList);
         // Right Up
-        WalkCheck(currentnode.x + 1, currentnode.z + 1, ref aroundList);
+        // WalkCheck(currentnode.x + 1, currentnode.z + 1, ref aroundList);
 
         // Up
         WalkCheck(currentnode.x, currentnode.z + 1, ref aroundList);

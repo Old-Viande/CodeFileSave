@@ -25,39 +25,21 @@ MonoBehaviour:
     isPlayer: 1
     attackRange: 1
     moveSpeed: 5
-    Item: {fileID: 8437466277963514841, guid: 55eb148c81ddae44db7295f6c6817e11, type: 3}
+    Item: {fileID: 7696367146301282940, guid: b306f2cd517a10f4ab931343dc413220, type: 3}
     currentState: 0
+    skillSave:
+    - skillName: Attack
+      attackRange: 2
+      skillLeve: 0
+      skillboots: 0
+      orginAttack: 5
+      timelineAsset: {fileID: 0}
+      currentSkillType: 1
+      currentSkillProperty: 0
+      currentSkillChoseType: 1
+      maxUnitChose: 0
+      coldDownTime: 0
+      maxcoldDownTime: 0
+      countDown: 0
+      maxcountDown: 0
     mask: {fileID: 0}
-    mainWeapon:
-      weaponName: 123
-      damage: 11
-      defence: 11
-      effectID: 11
-      attckType: 11
-    subWeapon:
-      weaponName: 
-      damage: 0
-      defence: 0
-      effectID: 0
-      attckType: 0
-    equipmentSave:
-    - itemName: 
-      itemID: 0
-      attack: 0
-      defence: 0
-      effectID: 0
-    - itemName: 
-      itemID: 0
-      attack: 0
-      defence: 0
-      effectID: 0
-    - itemName: 
-      itemID: 0
-      attack: 0
-      defence: 0
-      effectID: 0
-    - itemName: 
-      itemID: 0
-      attack: 0
-      defence: 0
-      effectID: 0

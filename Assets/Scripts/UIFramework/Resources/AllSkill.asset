@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e534633a47b9d7443b422835d4e0905d, type: 3}
+  m_Name: AllSkill
+  m_EditorClassIdentifier: 
+  datas:
+  - skillName: Attack
+    attackRange: 2
+    skillLeve: 0
+    skillboots: 0
+    orginAttack: 5
+    timelineAsset: {fileID: 0}
+    currentSkillType: 1
+    currentSkillProperty: 0
+    currentSkillChoseType: 1
+    maxUnitChose: 0
+    coldDownTime: 0
+    maxcoldDownTime: 0
+    countDown: 0
+    maxcountDown: 0
+  - skillName: fireball
+    attackRange: 5
+    skillLeve: 0
+    skillboots: 5
+    orginAttack: 10
+    timelineAsset: {fileID: 0}
+    currentSkillType: 1
+    currentSkillProperty: 1
+    currentSkillChoseType: 0
+    maxUnitChose: 0
+    coldDownTime: 0
+    maxcoldDownTime: 0
+    countDown: 5
+    maxcountDown: 5
+  - skillName: knife throwing
+    attackRange: 10
+    skillLeve: 0
+    skillboots: 2
+    orginAttack: 5
+    timelineAsset: {fileID: 0}
+    currentSkillType: 1
+    currentSkillProperty: 1
+    currentSkillChoseType: 1
+    maxUnitChose: 0
+    coldDownTime: 0
+    maxcoldDownTime: 3
+    countDown: 0
+    maxcountDown: 0

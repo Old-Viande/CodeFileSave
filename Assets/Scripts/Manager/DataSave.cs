@@ -210,8 +210,8 @@ public class DataSave : Singleton<DataSave>
     }
     private void Update()
     {
-        if(currentObj!=null)
-        mark.transform.position = currentObj.transform.position + Vector3.up * height;
+        //if(currentObj!=null)
+        //mark.transform.position = currentObj.transform.position + Vector3.up * height;
     }
 
     

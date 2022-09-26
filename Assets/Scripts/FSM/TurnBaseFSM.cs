@@ -64,7 +64,7 @@ public class TurnBaseFSM : Singleton<TurnBaseFSM>
                     x2 = a.x;
                     z2 = a.z;
                     nodeListCount = GridManager.Instance.pathFinder.FindPath(x1, z1, x2, z2).Count;
-                    if (nodeListCount<=attackRange)//如果在这个点位周围有任何一个点是满足条件的
+                    if (nodeListCount<=attackRange+1)//如果在这个点位周围有任何一个点是满足条件的
                     {
                         // 两者距离大于玩家攻击距离则还需先进行移动
                        // move = nodeListCount > unit.attackRange;
