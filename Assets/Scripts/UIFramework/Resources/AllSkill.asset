@@ -13,43 +13,52 @@ MonoBehaviour:
   m_Name: AllSkill
   m_EditorClassIdentifier: 
   datas:
-  - skillName: Attack
-    attackRange: 2
+  - locked: 0
+    skillName: Attack
+    attackRange: 1.5
+    playSpeed: 0
     skillLeve: 0
-    skillboots: 0
     orginAttack: 5
-    timelineAsset: {fileID: 0}
+    skillEffectRange: 0
+    timelineAsset: {fileID: 11400000, guid: 818d2e1094e4d204586b80d01cf42bdf, type: 2}
     currentSkillType: 1
     currentSkillProperty: 0
     currentSkillChoseType: 1
+    currentSkillShape: 0
     maxUnitChose: 0
     coldDownTime: 0
     maxcoldDownTime: 0
     countDown: 0
     maxcountDown: 0
-  - skillName: fireball
-    attackRange: 5
+  - locked: 0
+    skillName: fireball
+    attackRange: 6
+    playSpeed: 0
     skillLeve: 0
-    skillboots: 5
-    orginAttack: 10
-    timelineAsset: {fileID: 0}
+    orginAttack: 4
+    skillEffectRange: 3
+    timelineAsset: {fileID: 11400000, guid: 735229eb718951840ae4be742764eb8e, type: 2}
     currentSkillType: 1
     currentSkillProperty: 1
     currentSkillChoseType: 0
+    currentSkillShape: 0
     maxUnitChose: 0
     coldDownTime: 0
     maxcoldDownTime: 0
     countDown: 5
     maxcountDown: 5
-  - skillName: knife throwing
+  - locked: 0
+    skillName: knife throwing
     attackRange: 10
+    playSpeed: 0
     skillLeve: 0
-    skillboots: 2
     orginAttack: 5
+    skillEffectRange: 0
     timelineAsset: {fileID: 0}
     currentSkillType: 1
     currentSkillProperty: 1
     currentSkillChoseType: 1
+    currentSkillShape: 0
     maxUnitChose: 0
     coldDownTime: 0
     maxcoldDownTime: 3

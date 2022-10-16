@@ -25,8 +25,9 @@ MonoBehaviour:
     isPlayer: 0
     attackRange: 1
     moveSpeed: 5
-    Item: {fileID: 7726280983640837676, guid: 614a7ac13d19a104e8ecf427a32551f4, type: 3}
+    Item: {fileID: 3333466205719668340, guid: 541e538371e0a744f8d0bfb11f62ae03, type: 3}
     currentState: 0
+    skillSave: []
     Description: for the test
   - name: Boss
     UID: b1
@@ -42,6 +43,7 @@ MonoBehaviour:
     moveSpeed: 10
     Item: {fileID: 6414115672605557180, guid: 74cfcddbe0fc326429f12c91e2590d06, type: 3}
     currentState: 0
+    skillSave: []
     Description: for the test
   - name: Death
     UID: e1
@@ -57,4 +59,21 @@ MonoBehaviour:
     moveSpeed: 15
     Item: {fileID: 6414115672605557180, guid: 74cfcddbe0fc326429f12c91e2590d06, type: 3}
     currentState: 0
+    skillSave: []
+    Description: for the test
+  - name: Z-Man
+    UID: e1
+    hp: 10
+    maxHp: 10
+    speed: 5
+    attack: 10
+    defense: 5
+    actionPoint: 2
+    maxActionPoint: 2
+    isPlayer: 0
+    attackRange: 2
+    moveSpeed: 15
+    Item: {fileID: 6414115672605557180, guid: 74cfcddbe0fc326429f12c91e2590d06, type: 3}
+    currentState: 0
+    skillSave: []
     Description: for the test

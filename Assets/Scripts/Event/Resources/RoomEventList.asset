@@ -1,0 +1,205 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aba5707c08991b8439a93c5d74c0a5a4, type: 3}
+  m_Name: RoomEventList
+  m_EditorClassIdentifier: 
+  RoomEventList:
+  - ID: 0
+    Name: Surprised!
+    Description:
+    - "\u4F60\u770B\u5230\u4E86\u4EC0\u4E48"
+    - "\u4F46\u4F60\u4E0D\u80FD\u786E\u5B9A"
+    - "\u8C01\u77E5\u9053\u5462\uFF0C\u8BF4\u4E0D\u5B9A\u662F\u4F60\u81EA\u5DF1\u770B\u8D70\u4E86\u773C"
+    RoomEventTriggerFoldout: 1
+    RoomEventTrigger:
+      RoomEventEffectTrigger: 0
+      RoomEventEffectTriggerArg: 0
+      EventTriggerPre: 0
+      EventTriggerPreArg1: 0
+      EventTriggerPreArg2: 0
+      EventTriggerPreArg3: 0
+      EventTriggerPreArg4: 0
+    EventEffectFoldout: 1
+    RoomEventEffect:
+      HasEventEffect: 0
+      EventTarget: 0
+      EventTargetFilter: 0
+      EventTargetCheckValueType: 0
+      EventTargetCheckValueFilter: 0
+      EventTargetFilterArg1: 0
+      EventTargetFilterArg2: 0
+      EventTargetFilterArg3: 0
+      EventEffectWithTarget: 0
+      EventEffectWithoutTarget: 0
+      EventEffectChangeValueType: 0
+      EventEffectChangeValueChangeType: 0
+      EventEffectChangeValue: 0
+    SkillChangeType: 0
+    SkillCountChangeType: 1
+    SkillID: 0
+    SkillIDList: 0100000002000000
+    SkillValueType: 0
+    SkillValue:
+      LockState: 0
+      Name: 
+      Property: 0
+      MaxProperty: 0
+      AttackRange: 0
+      SkillEffectRange: 0
+      OriginAttack: 0
+      ChooseType: 0
+      Shape: 0
+      MaxUnitsChoose: 0
+      ValueChangeType: 0
+    EnemyCreateDataList:
+    - ID: 0
+      Count: 3
+    - ID: 2
+      Count: 1
+    ButtonList:
+    - Text: "\u597D\u7684"
+      ButtonCondition: 1
+      ButtonConditionValueType: 0
+      ButtonConditionValueFilter: 0
+      ButtonConditionArg1: 0
+      ButtonConditionArg2: 0
+      ButtonEvent:
+        m_PersistentCalls:
+          m_Calls: []
+    - Text: "\u771F\u7684\u770B\u8D70\u773C\u4E86\u5417\uFF1F"
+      ButtonCondition: 1
+      ButtonConditionValueType: 0
+      ButtonConditionValueFilter: 0
+      ButtonConditionArg1: 0
+      ButtonConditionArg2: 0
+      ButtonEvent:
+        m_PersistentCalls:
+          m_Calls: []
+  - ID: 1
+    Name: Boss is Coming!
+    Description:
+    - "\u4F60\u542C\u5230\u4E86\u4E00\u4E9B\u58F0\u97F3"
+    - "\u6709\u4EC0\u4E48\u5C31\u8981\u6765\u4E86"
+    RoomEventTriggerFoldout: 1
+    RoomEventTrigger:
+      RoomEventEffectTrigger: 0
+      RoomEventEffectTriggerArg: 0
+      EventTriggerPre: 4
+      EventTriggerPreArg1: 0
+      EventTriggerPreArg2: 0
+      EventTriggerPreArg3: 3
+      EventTriggerPreArg4: 10
+    EventEffectFoldout: 1
+    RoomEventEffect:
+      HasEventEffect: 0
+      EventTarget: 0
+      EventTargetFilter: 0
+      EventTargetCheckValueType: 0
+      EventTargetCheckValueFilter: 0
+      EventTargetFilterArg1: 0
+      EventTargetFilterArg2: 0
+      EventTargetFilterArg3: 0
+      EventEffectWithTarget: 0
+      EventEffectWithoutTarget: 0
+      EventEffectChangeValueType: 0
+      EventEffectChangeValueChangeType: 0
+      EventEffectChangeValue: 0
+    SkillChangeType: 0
+    SkillCountChangeType: 0
+    SkillID: 0
+    SkillIDList: 
+    SkillValueType: 0
+    SkillValue:
+      LockState: 0
+      Name: 
+      Property: 0
+      MaxProperty: 0
+      AttackRange: 0
+      SkillEffectRange: 0
+      OriginAttack: 0
+      ChooseType: 0
+      Shape: 0
+      MaxUnitsChoose: 0
+      ValueChangeType: 0
+    EnemyCreateDataList:
+    - ID: 0
+      Count: 3
+    - ID: 2
+      Count: 1
+    ButtonList:
+    - Text: "\u51C6\u5907\u8FCE\u6218"
+      ButtonCondition: 0
+      ButtonConditionValueType: 0
+      ButtonConditionValueFilter: 0
+      ButtonConditionArg1: 0
+      ButtonConditionArg2: 0
+      ButtonEvent:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 0}
+            m_TargetAssemblyTypeName: 
+            m_MethodName: 
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: 
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+  - ID: 2
+    Name: Something in the Dark
+    Description: []
+    RoomEventTriggerFoldout: 1
+    RoomEventTrigger:
+      RoomEventEffectTrigger: 0
+      RoomEventEffectTriggerArg: 0
+      EventTriggerPre: 0
+      EventTriggerPreArg1: 0
+      EventTriggerPreArg2: 0
+      EventTriggerPreArg3: 0
+      EventTriggerPreArg4: 0
+    EventEffectFoldout: 1
+    RoomEventEffect:
+      HasEventEffect: 0
+      EventTarget: 0
+      EventTargetFilter: 0
+      EventTargetCheckValueType: 0
+      EventTargetCheckValueFilter: 0
+      EventTargetFilterArg1: 0
+      EventTargetFilterArg2: 0
+      EventTargetFilterArg3: 0
+      EventEffectWithTarget: 0
+      EventEffectWithoutTarget: 0
+      EventEffectChangeValueType: 0
+      EventEffectChangeValueChangeType: 0
+      EventEffectChangeValue: 0
+    SkillChangeType: 0
+    SkillCountChangeType: 0
+    SkillID: 0
+    SkillIDList: 
+    SkillValueType: 0
+    SkillValue:
+      LockState: 0
+      Name: 
+      Property: 0
+      MaxProperty: 0
+      AttackRange: 0
+      SkillEffectRange: 0
+      OriginAttack: 0
+      ChooseType: 0
+      Shape: 0
+      MaxUnitsChoose: 0
+      ValueChangeType: 0
+    EnemyCreateDataList: []
+    ButtonList: []

@@ -27,7 +27,8 @@ public class TurnBaseFSM : Singleton<TurnBaseFSM>
         state.Add(StateType.EnemyAttack, new EnemyAttack(this));
         state.Add(StateType.EnemyIdel, new EnemyIdel(this));
         state.Add(StateType.EnemyMove, new EnemyMove(this));
-        mainCamera= GridManager.Instance.camera;
+        state.Add(StateType.Skill, new SkillState(this));
+        mainCamera = GridManager.Instance.camera;
         TranState(StateType.Start);
     }
 
@@ -55,25 +56,34 @@ public class TurnBaseFSM : Singleton<TurnBaseFSM>
        
         GridManager.Instance.stepGrid.GetGridXZ(currentobj.transform.position, out int x1, out int z1);
         GridManager.Instance.stepGrid.GetGridXZ(target.transform.position, out int x2, out int z2);
-       
-            aroundList = GridManager.Instance.pathFinder.CheckAroundNodes(GridManager.Instance.pathFinder.GetGrid().GetValue(x2, z2));
-            foreach (var a in aroundList)
-            {
-                if (a.canWalk)
-                {
-                    x2 = a.x;
-                    z2 = a.z;
-                    nodeListCount = GridManager.Instance.pathFinder.FindPath(x1, z1, x2, z2).Count;
-                    if (nodeListCount<=attackRange+1)//如果在这个点位周围有任何一个点是满足条件的
-                    {
-                        // 两者距离大于玩家攻击距离则还需先进行移动
-                       // move = nodeListCount > unit.attackRange;
 
-                        return true;
-                    }
-                }
-            }        
+        var pathNode = GridManager.Instance.pathFinder.GetGrid().GetValue(x2, z2);
+        pathNode.canWalk = true;
+        nodeListCount = GridManager.Instance.pathFinder.FindPath(x1, z1, x2, z2, true).Count;
+        if (nodeListCount <= attackRange)
+        {
+            pathNode.canWalk = false;
+            return true;
+        }
+        //aroundList = GridManager.Instance.pathFinder.CheckAroundNodes(GridManager.Instance.pathFinder.GetGrid().GetValue(x2, z2));
+        //foreach (var a in aroundList)
+        //{
+        //    if (a.canWalk)
+        //    {
+        //        x2 = a.x;
+        //        z2 = a.z;
+        //        nodeListCount = GridManager.Instance.pathFinder.FindPath(x1, z1, x2, z2).Count;
+        //        if (nodeListCount<=attackRange+1)//如果在这个点位周围有任何一个点是满足条件的
+        //        {
+        //            // 两者距离大于玩家攻击距离则还需先进行移动
+        //           // move = nodeListCount > unit.attackRange;
+
+        //            return true;
+        //        }
+        //    }
+        //}        
         // 判定两者间寻路距离是否小于等于玩家的攻击距离与可走格数之和      
+        pathNode.canWalk = false;
         return false;
     }
 }

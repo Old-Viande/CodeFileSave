@@ -20,4 +20,8 @@ public enum UIPanelType{
 
     OptionPanel,
     SkillChoosePanel,
+    /// <summary>
+    /// 事件界面
+    /// </summary>
+    EventPanel,
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class GridManager : Singleton<GridManager>
 {
@@ -29,11 +30,27 @@ public class GridManager : Singleton<GridManager>
     public LayerMask layerMask;
     private int pX, pZ;
     public Dictionary<string, Vector2> doorSave = new Dictionary<string, Vector2>();
+    //一下皆为技能相关全局变量
+    /// <summary>
+    /// 技能是否在运行中
+    /// </summary>
+    public bool skillReadyToUse;//用来检测是否处于技能选择目标期间
+    public List<Collider> skilleffect = new List<Collider>();//存储所有被技能影响的单位,无论技能是单体还是群体
+    private SkillData tempSkill;
+    public Vector3 skillHitPoint;
+    DecalProjector tempRange;
+
+    /// <summary>
+    /// 当前技能的释放距离
+    /// </summary>
+    public float currentDistance;
+
     //private bool canClick =false;
     private void Start()
     {
-        roomGridmap = new Gridmap<GameObject>(maxWidth, maxHeight, minWidth, minHeight, celllong, origenPoint, Outdo);
 
+        roomGridmap = new Gridmap<GameObject>(maxWidth, maxHeight, minWidth, minHeight, celllong, origenPoint, Outdo);
+        skillReadyToUse = false;
         minX = minWidth * celllong;
         minY = minHeight * celllong;
         maxX = maxWidth * celllong;
@@ -47,9 +64,9 @@ public class GridManager : Singleton<GridManager>
              int randomnumber = Random.RandomRange(0, 100);
              Debug.Log(randomnumber+" ");
          }*/
-
-        UIManager.Instance.PushPanel(UIPanelType.OptionPanel);
-
+        GameObject effect = Resources.Load<GameObject>("attackRange");//读到物体
+        tempRange = Instantiate(effect).GetComponent<DecalProjector>();
+        UIManager.Instance.PushPanel(UIPanelType.OptionPanel);//生成物体
     }
     public GameObject Outdo(Gridmap<GameObject> grid, int x, int z)
     {
@@ -68,19 +85,182 @@ public class GridManager : Singleton<GridManager>
         {
             Debug.DrawLine(ray.origin, ray.direction * 100 + ray.origin, Color.red, 100f);
 
-            if (Input.GetMouseButtonDown(0))
-            {
-                Debug.DrawLine(ray.origin, ray.direction * 100 + ray.origin, Color.red, 100f);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-                    Debug.Log(hit.collider.name);
-            }
+            //if (Input.GetMouseButtonDown(0))
+            //{
+            Debug.DrawLine(ray.origin, ray.direction * 100 + ray.origin, Color.red, 100f);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                Debug.Log(hit.collider.name);
+            //}
+
         }
         if (TimeCountDown.Instance.clocks.ToArray().Length != 0)
         {
             Debug.Log(Mathf.CeilToInt(TimeCountDown.Instance.clocks[0]) + " this is list and in Grid ");
         }
+        if (skillReadyToUse)
+        {
+            UpdataManager.Instance.skillLineOpen = true;
+            Debug.Log("skill is ready for using");
+            //LineRenderer line;//取得组件
+            RaycastHit checkHit;
+            Physics.Raycast(ray, out checkHit, Mathf.Infinity);
+            // line = DataSave.Instance.currentObj.GetComponent<LineRenderer>();
+            // line.SetPosition(0, DataSave.Instance.currentObj.transform.position);//起始点是物体坐标
+            //这里往下的代码是箭头指示物
+            LineRendererScript.Instance.StartPosSet();
+            if (tempSkill.currentSkillChoseType == SkillData.skillChoseType.multi)
+            {
+                UpdataManager.Instance.skillMarkOpen = true;
+                tempRange.size = new Vector3(tempSkill.skillEffectRange * 2, tempSkill.skillEffectRange * 2, 20);
+                tempRange.pivot = new Vector3(0, 0, tempRange.size.z / 2);
+                //遇到了问题，我找不到投射器组件的调整宽高的方法
+                //范围检测，首先找到当前行动单位和目标(已解决)
+                if ((checkHit.point - DataSave.Instance.currentObj.transform.position).magnitude > tempSkill.attackRange)//如果鼠标的距离大于技能的攻击距离
+                {
+                    currentDistance = tempSkill.attackRange;
 
+                    skillHitPoint = (checkHit.point - DataSave.Instance.currentObj.transform.position).normalized * tempSkill.attackRange + DataSave.Instance.currentObj.transform.position;
+                    LineRendererScript.Instance.EndPosSet(skillHitPoint);
+                    tempRange.transform.position = (checkHit.point - DataSave.Instance.currentObj.transform.position).normalized * tempSkill.attackRange + DataSave.Instance.currentObj.transform.position + Vector3.up;
+                }
+                else
+                {
+                    currentDistance = (checkHit.point - DataSave.Instance.currentObj.transform.position).magnitude;
+                    skillHitPoint = checkHit.point;
+                    LineRendererScript.Instance.EndPosSet(checkHit.point);//结束点是射线碰撞点坐标
+                    tempRange.transform.position = checkHit.point + Vector3.up * 0.5f;
+                }
+            }
+            else
+            {
+                //关闭范围显示技能
+                UpdataManager.Instance.skillMarkOpen = false;
+                //范围检测，首先找到当前行动单位和目标
+                if ((checkHit.point - DataSave.Instance.currentObj.transform.position).magnitude > tempSkill.attackRange)//如果鼠标的距离大于技能的攻击距离
+                {
+                    skillHitPoint = (checkHit.point - DataSave.Instance.currentObj.transform.position).normalized * tempSkill.attackRange + DataSave.Instance.currentObj.transform.position;
+                    LineRendererScript.Instance.EndPosSet(skillHitPoint);
+                }
+                else
+                {
+                    skillHitPoint = checkHit.point;
+                    LineRendererScript.Instance.EndPosSet(checkHit.point);//结束点是射线碰撞点坐标
+
+                }
+            }
+
+            if ((checkHit.point - DataSave.Instance.currentObj.transform.position).magnitude < tempSkill.attackRange)//如果鼠标的距离小于技能的攻击距离
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    skilleffect.Clear();//先清空储存
+                    if (tempSkill.currentSkillType == SkillData.skillType.attack || tempSkill.currentSkillType == SkillData.skillType.control)//检测传入的技能类型
+                    {
+                        //攻击和控制类型检测标签必须为敌人
+                        if (tempSkill.currentSkillChoseType == SkillData.skillChoseType.multi)
+                        {
+
+                            Collider[] hitItem = Physics.OverlapSphere(checkHit.point, tempSkill.skillEffectRange);//如果是多选就用这个球形检测
+                            foreach (var item in hitItem)
+                            {
+                                if (item.tag == "enemy")
+                                {
+                                    skilleffect.Add(item);//把所有可以受到影响的单位全部存入全局变量
+
+                                }
+                            }
+
+
+                        }
+                        else
+                        {
+                            if (checkHit.collider.tag == "enemy")
+                            {
+                                skilleffect.Add(checkHit.collider);//单体直接检测
+
+
+                            }
+                        }
+                    }
+                    else if (tempSkill.currentSkillType == SkillData.skillType.heal || tempSkill.currentSkillType == SkillData.skillType.enhanch)
+                    {
+                        //治愈和强化类型的技能选择对象必须为友方
+                        if (tempSkill.currentSkillChoseType == SkillData.skillChoseType.multi)
+                        {
+
+                            Collider[] hitItem = Physics.OverlapSphere(checkHit.point, tempSkill.attackRange);//如果是多选就用这个球形检测
+                            foreach (var item in hitItem)
+                            {
+                                if (item.tag == "player")
+                                {
+                                    skilleffect.Add(item);//把所有可以受到影响的单位全部存入全局变量
+
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if (checkHit.collider.tag == "player")
+                            {
+                                skilleffect.Add(checkHit.collider);//单体直接检测
+
+                            }
+                        }
+                    }
+                    foreach (var item in skilleffect)
+                    {
+                        Debug.Log("skill effect " + " " + item.name);
+                        item.GetComponent<EnemyData>().heardMark.GetComponent<SpriteRenderer>().enabled = true;//在组件里渲染箭头                
+                    }
+                    UpdataManager.Instance.skillLineOpen = false;
+                    UpdataManager.Instance.skillMarkOpen = false;
+                    SkillManagerMono.Instance.SkillPlay(skilleffect, DataSave.Instance.currentObj, tempSkill);
+                    skillReadyToUse = false;
+                }
+
+
+
+            }
+
+
+        }
+    }
+    public void skillset(SkillData skill)
+    {
+        skillReadyToUse = true;
+        tempSkill = skill;
+    }
+    public void skillover()
+    {
+        skillReadyToUse = false;
+    }
+
+    private void CheckEvent(GameObject roomGO)
+    {
+        var register = roomGO.GetComponent<EventRegister>();
+        var roomEvent = RoomEventManager.Instance.GetTriggeredRoomEvent(register);
+        if (roomEvent == null)
+            return;
+
+        if (RoomEventManager.Instance.CheckRoomEventCondition(roomEvent))
+        {
+            EventPanel eventPanel = UIManager.Instance.PushPanel(UIPanelType.EventPanel) as EventPanel;
+            eventPanel.UpdateRoomEvent(roomEvent);
+        }
+    }
+
+    private void CreateRoom(int x, int z)
+    {
+        if (roomGridmap.GetValue(x, z) != null)
+            return;
+
+        GameObject roomGO = Instantiate(room, roomGridmap.GetGridCenter(x, z), Quaternion.identity);
+        roomGridmap.SetValue(x, z, roomGO);//要将生成的物体存入网格内
+        RoomToStep(x, z);
+        RoomBuild.Instance.CreateGrid(roomGridmap.GetWorldPosition(x, z));
+        CheckEvent(roomGO);
     }
 
     private void FixedUpdate()
@@ -91,51 +271,26 @@ public class GridManager : Singleton<GridManager>
             CheckDoor(x, z);
             foreach (var a in doorSave)
             {
-                int tx, tz;//存储当前角色的站位
-                stepGrid.GetGridXZ(item.Value.gameObject.transform.position, out tx, out tz);
+                stepGrid.GetGridXZ(item.Value.gameObject.transform.position, out int tx, out int tz);
                 if (tx == a.Value.x && tz == a.Value.y)
                 {
-
                     switch (a.Key)//检测踩入的门格是什么方向的
                     {
                         case "forward":
-                            if (roomGridmap.GetValue(x, z + 1) == null)
-                            {
-                                roomGridmap.SetValue(x, z + 1, Instantiate(room, roomGridmap.GetGridCenter(x, z + 1) , Quaternion.identity));//要将生成的物体存入网格内
-                                RoomToStep(x, z + 1);
-                                RoomBuild.Instance.CreateGrid(roomGridmap.GetWorldPosition(x, z + 1));
-                            }
+                            CreateRoom(x, z + 1);
                             break;
                         case "left":
-                            if (roomGridmap.GetValue(x - 1, z) == null)
-                            {
-                                roomGridmap.SetValue(x - 1, z, Instantiate(room, roomGridmap.GetGridCenter(x - 1, z) , Quaternion.identity));
-                                RoomToStep(x - 1, z);
-                                RoomBuild.Instance.CreateGrid(roomGridmap.GetWorldPosition(x - 1, z));
-                            }
+                            CreateRoom(x - 1, z);
                             break;
                         case "right":
-                            if (roomGridmap.GetValue(x + 1, z) == null)
-                            {
-                                roomGridmap.SetValue(x + 1, z, Instantiate(room, roomGridmap.GetGridCenter(x + 1, z), Quaternion.identity));
-                                RoomToStep(x + 1, z);
-                                RoomBuild.Instance.CreateGrid(roomGridmap.GetWorldPosition(x + 1, z));
-                            }
+                            CreateRoom(x + 1, z);
                             break;
                         case "back":
-                            if (roomGridmap.GetValue(x, z - 1) == null)
-                            {
-                                //roomGrid.SetValue(x, z - 1, Instantiate(room, roomGrid.GetGridCenter(x, z - 1) + Vector3.down * 0.55f, Quaternion.identity));
-                                roomGridmap.SetValue(x, z - 1, Instantiate(room, roomGridmap.GetGridCenter(x, z - 1), Quaternion.identity));
-                                RoomToStep(x, z - 1);
-                                RoomBuild.Instance.CreateGrid(roomGridmap.GetWorldPosition(x, z - 1));
-                            }
+                            CreateRoom(x, z - 1);
                             break;
                     }
                 }
             }
-
-
         }
     }
     public void RoomToStep(int gx, int gz)

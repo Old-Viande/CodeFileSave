@@ -4,8 +4,8 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName ="New Skill",menuName ="Skill")]
 public class SkillDatas_SO : ScriptableObject
 {
-    public List<SkillData_SO> datas;
-    public Dictionary<string, SkillData_SO> datasSave = new Dictionary<string, SkillData_SO>();
+    public List<SkillData> datas;
+    public Dictionary<string, SkillData> datasSave = new Dictionary<string, SkillData>();
 
 #if UNITY_EDITOR
     void OnValidate()

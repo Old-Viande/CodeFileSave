@@ -11,7 +11,7 @@ public class DataSave : Singleton<DataSave>
     public List<Enemy> tempEnemies = new List<Enemy>();
     public Dictionary<string, Character> tempEnemySave = new Dictionary<string, Character>();
 
-    public List<CharacterData> valueSave = new List<CharacterData>();//存入的是场上实例的每回合排序，
+    public List<CharacterData> valueSave = new List<CharacterData>();//存入的是场上实例的每回合排序，这里有目前的场上所有单位
     public List<string> keySave = new List<string>();//存入的是场上实例的名称每回合排序
     /// <summary>
     /// 用于存储场上现有可控单位的字典
@@ -22,6 +22,8 @@ public class DataSave : Singleton<DataSave>
     //public Dictionary<string, GameObject> objSave = new Dictionary<string, GameObject>();
     public GameObject mark;
     public float height;
+
+    public List<Buff> bufflist = new List<Buff>();
     public static T DeepCopy<T>(T obj)//从SO文件深拷贝数据
     {
         string json = JsonUtility.ToJson(obj);
@@ -45,7 +47,19 @@ public class DataSave : Singleton<DataSave>
             tempEnemies.Add(Esave);
             tempEnemySave.Add(Esave.name, Esave);
         }
-   
+        bufflist.Add(new HealBuff());
+    }
+
+    public Buff GetBuffByName(string name)
+    {
+        for (int i = 0; i < bufflist.Count; i++)
+        {
+            if (bufflist[i].buffName == name)
+            {
+                return bufflist[i];
+            }
+        }
+        return null;
     }
 
     public void SaveSoData()
@@ -66,119 +80,12 @@ public class DataSave : Singleton<DataSave>
             tempEnemySave.Add(Esave.name, Esave);
         }
     }
-
-    //public void AddObject(string name,GameObject obj)
-    //{
-    //    objSave.Add(name, obj);
-    //}
-    //public void RemovObject(string name, GameObject obj)
-    //{
-    //    objSave.Remove(name);
-    //}
+   
     public void SaveData()
     {
         string tempNaame;
         CharacterData tempCharacter;
-      /*  characters.Clear();
-        for (int i = 0; i < players.Count; i++)
-        {
-            for (int f = 0; f < characters.Count; f++)
-            {
-                if (characters[f].tag != "enemy")
-                {
-                    if (players[i].GetComponent<PlayerData>().player.speed > characters[f].GetComponent<PlayerData>().player.speed)
-                    {
-                        if (f == characters.Count - 1)
-                        {
-                            characters.Add(players[i]);
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        characters.Insert(f, players[i]);
-                        break;
-                    }
-                }
-                else
-                {
-                    if (players[i].GetComponent<PlayerData>().player.speed > characters[f].GetComponent<EnemyData>().enemy.speed)
-                    {
-                        if (f == characters.Count - 1)
-                        {
-                            characters.Add(players[i]);
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        characters.Insert(f, players[i]);
-                        break;
-                    }
-                }
 
-            }
-            if (characters.Count == 0)
-            {
-                characters.Add(players[i]);
-            }
-        }
-        for (int i = 0; i < enemies.Count; i++)
-        {
-
-            for (int f = 0; f < characters.Count; f++)
-            {
-                if (characters[f].tag != "enemy")
-                {
-                    if (enemies[i].GetComponent<PlayerData>().player.speed > characters[f].GetComponent<PlayerData>().player.speed)
-                    {
-                        if (f == characters.Count - 1)
-                        {
-                            characters.Add(players[i]);
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        characters.Insert(f, players[i]);
-                        break;
-                    }
-                }
-                else
-                {
-                    if (enemies[i].GetComponent<PlayerData>().player.speed > characters[f].GetComponent<EnemyData>().enemy.speed)
-                    {
-                        if (f == characters.Count - 1)
-                        {
-                            characters.Add(players[i]);
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        characters.Insert(f, enemies[i]);
-                        break;
-                    }
-                }
-            }
-            if (characters.Count == 0)
-            {
-                characters.Add(enemies[i]);
-            }
-        }
-        characters.Reverse();*/
 
         foreach (var item in CreateManager.Instance.unitSave)
         {          
@@ -210,8 +117,7 @@ public class DataSave : Singleton<DataSave>
     }
     private void Update()
     {
-        //if(currentObj!=null)
-        //mark.transform.position = currentObj.transform.position + Vector3.up * height;
+       
     }
 
     

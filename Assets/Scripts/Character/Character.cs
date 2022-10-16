@@ -12,8 +12,12 @@ public class Character
 	public float hp;
 
 	public float maxHp;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public float speed;
+
+    public float speedModifier;
 
     public float attack;
 
@@ -42,6 +46,6 @@ public class Character
 
     public State currentState;
 
-    public List<SkillData_SO> skillSave = new List<SkillData_SO>();
+    public List<SkillData> skillSave = new List<SkillData>();
 
 }

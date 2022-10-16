@@ -21,7 +21,7 @@ public class PathFinder
     {
         return grid;
     }
-    public List<PathNode> FindPath(int startX, int startZ, int endX, int endZ) //传入开始点的网格坐标以及目标点的网格坐标
+    public List<PathNode> FindPath(int startX, int startZ, int endX, int endZ, bool canInteract = false) //传入开始点的网格坐标以及目标点的网格坐标
     {
         PathNode startNode = grid.GetValue(startX, startZ);
         PathNode endNode = grid.GetValue(endX, endZ);
@@ -93,13 +93,21 @@ public class PathFinder
         startNode.h = GetDistanceCost(startNode, endNode);
         startNode.Getf();
 
+        if (canInteract)
+            endNode.canWalk = true;
 
         while (openNodes.Count > 0)//循环网格中的可行走格子
         {
             PathNode currentNode = GetCurrentNode(openNodes);
             if (currentNode == endNode)
             {
-                return GetPath(endNode);
+                var result = GetPath(endNode);
+                if (canInteract)
+                {
+                    endNode.canWalk = false;
+                    result.Remove(endNode);
+                }
+                return result;
             }
 
             openNodes.Remove(currentNode);
@@ -124,6 +132,8 @@ public class PathFinder
                 }
             }
         }
+        if (canInteract)
+            endNode.canWalk = false;
         return new List<PathNode>();
     }
 
@@ -168,20 +178,24 @@ public class PathFinder
     private List<PathNode> AroundNodes(PathNode currentnode)// 新版本寻路节点                                                          
     {
         List<PathNode> aroundList = new List<PathNode>();
-        WalkCheck(currentnode.x - 1, currentnode.z, ref aroundList);
+        if(currentnode.CheckDirection(PathNode.Direction.Left))
+            WalkCheck(currentnode.x - 1, currentnode.z, ref aroundList);
         //WalkCheck(currentnode.x - 1, currentnode.z - 1, ref aroundList);
         //WalkCheck(currentnode.x - 1, currentnode.z + 1, ref aroundList);
         // Right
-        WalkCheck(currentnode.x + 1, currentnode.z, ref aroundList);
+        if(currentnode.CheckDirection(PathNode.Direction.Right))
+            WalkCheck(currentnode.x + 1, currentnode.z, ref aroundList);
         // Right Down
         //WalkCheck(currentnode.x + 1, currentnode.z - 1, ref aroundList);
         // Right Up
         // WalkCheck(currentnode.x + 1, currentnode.z + 1, ref aroundList);
 
         // Up
-        WalkCheck(currentnode.x, currentnode.z + 1, ref aroundList);
+        if(currentnode.CheckDirection(PathNode.Direction.Up))
+            WalkCheck(currentnode.x, currentnode.z + 1, ref aroundList);
         // Down
-        WalkCheck(currentnode.x, currentnode.z - 1, ref aroundList);
+        if(currentnode.CheckDirection(PathNode.Direction.Down))
+            WalkCheck(currentnode.x, currentnode.z - 1, ref aroundList);
         return aroundList;
     }
 
@@ -226,10 +240,36 @@ public class PathFinder
 
     private int GetDistanceCost(PathNode a, PathNode b)//这一段是在算距离花费
     {
-        int xDistance = Mathf.Abs(a.x - b.x);
-        int zDistance = Mathf.Abs(a.z - b.z);
-        int remaining = Mathf.Abs(xDistance - zDistance);
-        return MOVE_DIAGONAL_COST * Mathf.Min(xDistance, zDistance) + MOVE_STRAIGHT_COST * remaining;
+        //int xDistance = Mathf.Abs(a.x - b.x);
+        //int zDistance = Mathf.Abs(a.z - b.z);
+        //int remaining = Mathf.Abs(xDistance - zDistance);
+        //return MOVE_DIAGONAL_COST * Mathf.Min(xDistance, zDistance) + MOVE_STRAIGHT_COST * remaining;
+        int xRoomA = a.x / 7, zRoomA = a.z / 7; // A所在房间
+        int xRoomB = b.x / 7, zRoomB = b.z / 7; // B所在房间
+        int xA = a.x % 7, zA = a.z % 7; // A在房间内的坐标
+        int xB = b.x % 7, zB = b.z % 7; // B在房间内的坐标
+        int result;
+        if (xRoomA == xRoomB && zRoomA == zRoomB)
+        {
+            result = Mathf.Abs(a.x - b.x) + Mathf.Abs(a.z - b.z);
+        }
+        else if (xRoomA == xRoomB)
+        {
+            result = Mathf.Abs(a.z - b.z) + Mathf.Abs(xA - 3) + Mathf.Abs(xB - 3);
+        }
+        else if (zRoomA == zRoomB)
+        {
+            result = Mathf.Abs(a.x - b.x) + Mathf.Abs(zA - 3) + Mathf.Abs(zB - 3);
+        }
+        else
+        {
+            int temp1 = zRoomB > zRoomA ? (6 - zA + Mathf.Abs(3 - xA)) : (zA + Mathf.Abs(3 - xA));
+            int temp2 = xRoomB > xRoomA ? (xB + Mathf.Abs(3 - zB)) : (6 - xB + Mathf.Abs(3 - zB));
+            int temp3 = xRoomB > xRoomA ? (6 - xA + Mathf.Abs(3 - zA)) : (xA + Mathf.Abs(3 - zA));
+            int temp4 = zRoomB > zRoomA ? (zB + Mathf.Abs(3 - xB)) : (6 - zB + Mathf.Abs(3 - xB));
+            result = Mathf.Min(temp1 + temp2, temp3 + temp4) + 8 * (Mathf.Abs(xRoomA - xRoomB) + Mathf.Abs(zRoomA - zRoomB) - 1);
+        }
+        return result;
     }
 
     public PathNode GetCurrentNode(List<PathNode> pathnodelist)//找出当前节点，也就是F最小的那个点

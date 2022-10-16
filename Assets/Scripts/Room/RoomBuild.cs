@@ -33,9 +33,15 @@ public class RoomBuild : Singleton<RoomBuild>
     {
         return null;
     }
+
+    private bool CheckAroundNode(float x, float y)
+    {
+        return pointlist.Contains(new Vector2(x, y)) && GridManager.Instance.roomCell.GetValue((int)x, (int)y) == null;
+    }
+
     private void RoomCreate(RoomType type)
     {
-
+        pointlist.Clear();
         foreach (var item in GridManager.Instance.roomCell.gridDictionary)//将网格内的所有物品全部存入数组
         {
             if (item.Key.x != 3 && item.Key.y != 3)
@@ -46,18 +52,56 @@ public class RoomBuild : Singleton<RoomBuild>
         {
             for (int i = 0; i < createNumb; i++)
             {
-                GameObject save;
                 int rNumb = Random.Range(0, pointlist.Count - 1);
+                GameObject save = GridManager.Instance.roomCell.GetValue((int)pointlist[rNumb].x, (int)pointlist[rNumb].y);
+                if (save != null)
+                    continue;
+
                 int objRandom = Random.Range(0, liveroom.Count - 1);
-                save = GridManager.Instance.roomCell.GetValue((int)pointlist[rNumb].x, (int)pointlist[rNumb].y);//读取格子内是否存在物体
-                if (save == null) 
+                if (liveroom[objRandom].GetComponent<FurnitureData>().Type == FurnitureData.FurnitureType.OneByOne)
                 {
                     GridManager.Instance.roomCell.SetValue((int)pointlist[rNumb].x, (int)pointlist[rNumb].y, Instantiate(liveroom[objRandom], GridManager.Instance.roomCell.GetGridCenter((int)pointlist[rNumb].x, (int)pointlist[rNumb].y), Quaternion.identity));
-                }//如果为空则生成一个家具
+                    //如果为空则生成一个家具
                     //Instantiate(liveroom[objRandom], GridManager.Instance.roomCell.GetGridCenter((int)pointlist[rNumb].x, (int)pointlist[rNumb].y), Quaternion.identity);
-
                     //这里出了BUG,不知道为什么，这个字典里面存入的值是被生成的物品的坐标，这导致了网格内存入的物体的网格坐标超出了其他网格的边界！！！！(已修复)
-
+                }
+                else
+                {
+                    bool found = false;
+                    float itemX = 0.0f, itemY = 0.0f;
+                    if (CheckAroundNode(pointlist[rNumb].x - 1, pointlist[rNumb].y))
+                    {
+                        found = true;
+                        itemX = pointlist[rNumb].x - 1;
+                        itemY = pointlist[rNumb].y;
+                    }
+                    else if (!found && CheckAroundNode(pointlist[rNumb].x + 1, pointlist[rNumb].y))
+                    {
+                        found = true;
+                        itemX = pointlist[rNumb].x + 1;
+                        itemY = pointlist[rNumb].y;
+                    }
+                    else if (!found && CheckAroundNode(pointlist[rNumb].x, pointlist[rNumb].y - 1))
+                    {
+                        found = true;
+                        itemX = pointlist[rNumb].x;
+                        itemY = pointlist[rNumb].y - 1;
+                    }
+                    else if (!found && CheckAroundNode(pointlist[rNumb].x, pointlist[rNumb].y + 1))
+                    {
+                        found = true;
+                        itemX = pointlist[rNumb].x;
+                        itemY = pointlist[rNumb].y + 1;
+                    }
+                    if (found)
+                    {
+                        Vector3 itemPos1 = GridManager.Instance.roomCell.GetGridCenter((int)pointlist[rNumb].x, (int)pointlist[rNumb].y);
+                        Vector3 itemPos2 = GridManager.Instance.roomCell.GetGridCenter((int)itemX, (int)itemY);
+                        GameObject furniture = Instantiate(liveroom[objRandom], (itemPos1 + itemPos2) / 2.0f, Quaternion.Euler(new Vector3(0, (pointlist[rNumb].y == itemY) ? 0 : 90, 0)));
+                        GridManager.Instance.roomCell.SetValue((int)pointlist[rNumb].x, (int)pointlist[rNumb].y, furniture);
+                        GridManager.Instance.roomCell.SetValue((int)itemX, (int)itemY, furniture);
+                    }
+                }
             }
         }
         else if (type == RoomType.studyRoom)
@@ -72,7 +116,7 @@ public class RoomBuild : Singleton<RoomBuild>
                 {
                     GridManager.Instance.roomCell.SetValue((int)pointlist[rNumb].x, (int)pointlist[rNumb].y, Instantiate(studyroom[objRandom], GridManager.Instance.roomCell.GetGridCenter((int)pointlist[rNumb].x, (int)pointlist[rNumb].y), Quaternion.identity));
                 }
-                    //Instantiate(studyroom[objRandom], GridManager.Instance.roomCell.GetGridCenter((int)pointlist[rNumb].x, (int)pointlist[rNumb].y), Quaternion.identity);
+                //Instantiate(studyroom[objRandom], GridManager.Instance.roomCell.GetGridCenter((int)pointlist[rNumb].x, (int)pointlist[rNumb].y), Quaternion.identity);
             }
         }
         foreach (var a in pointlist)
@@ -84,16 +128,16 @@ public class RoomBuild : Singleton<RoomBuild>
                 CreateManager.Instance.EnenmyCreate(GridManager.Instance.roomCell.GetGridCenter((int)a.x, (int)a.y));
                 break;
             }
-           
-         }
+
+        }
 
         foreach (var item in GridManager.Instance.roomCell.gridDictionary)//将网格内的所有物品全部存入数组
         {
             if (item.Value != null)
             {
-                GridManager.Instance.pathFinder.GetGrid().GetValue(GridManager.Instance.roomCell.GetValue((int)item.Key.x, (int)item.Key.y).transform.position).canWalk = false;
+                GridManager.Instance.pathFinder.GetGrid().GetValue(GridManager.Instance.roomCell.GetGridCenter((int)item.Key.x, (int)item.Key.y)).canWalk = false;
             }
-           
+
         }
     }
 }

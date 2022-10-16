@@ -6,5 +6,7 @@ public class Player :Character
 {
 
     public Mask mask;
+    public int luck;
+
 
 }

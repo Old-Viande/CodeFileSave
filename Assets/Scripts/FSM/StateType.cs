@@ -12,6 +12,7 @@ public enum StateType
     Check,//检测状态
     Idel,//玩家闲置
     Attack,//玩家攻击   
+    Skill,//玩家使用技能
     Move,//玩家移动
     EnemyIdel,//敌人闲置
     EnemyAttack,//敌人攻击
