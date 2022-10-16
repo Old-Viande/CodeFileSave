@@ -6,9 +6,7 @@ public class DataSave : Singleton<DataSave>
 {/// <summary>
 /// tempPlayers和tempEnemys都是对SO数据的深拷贝
 /// </summary>
-    public List<Player> tempPlayers = new List<Player>();
     public Dictionary<string, Character> tempPlayerSave = new Dictionary<string, Character>();
-    public List<Enemy> tempEnemies = new List<Enemy>();
     public Dictionary<string, Character> tempEnemySave = new Dictionary<string, Character>();
 
     public List<CharacterData> valueSave = new List<CharacterData>();//存入的是场上实例的每回合排序，这里有目前的场上所有单位
@@ -22,7 +20,10 @@ public class DataSave : Singleton<DataSave>
     //public Dictionary<string, GameObject> objSave = new Dictionary<string, GameObject>();
     public GameObject mark;
     public float height;
-
+    /// <summary>
+    /// 全局回合数
+    /// </summary>
+    public int roundCount = 0;
     public List<Buff> bufflist = new List<Buff>();
     public static T DeepCopy<T>(T obj)//从SO文件深拷贝数据
     {
@@ -30,24 +31,12 @@ public class DataSave : Singleton<DataSave>
         T targetData = JsonUtility.FromJson<T>(json);
         return targetData;
     }
-   private void Start()
+    private void Start()
     {
-        Player Psave;
-        Enemy Esave;
-        for (int i = 0; i < GridManager.Instance.characterData.characters.Count; i++)
-        {
-           Psave= DeepCopy<Player>(GridManager.Instance.characterData.characters[i]);
-            tempPlayers.Add(Psave);
-            tempPlayerSave.Add(Psave.name, Psave);
-        }
-
-        for (int i = 0; i < GridManager.Instance.enemyData.enemies.Count; i++)
-        {
-            Esave = DeepCopy<Enemy>(GridManager.Instance.enemyData.enemies[i]);
-            tempEnemies.Add(Esave);
-            tempEnemySave.Add(Esave.name, Esave);
-        }
+        SaveSoData();
         bufflist.Add(new HealBuff());
+        bufflist.Add(new ContralBuff());
+        bufflist.Add(new EnhanceBuff());
     }
 
     public Buff GetBuffByName(string name)
@@ -69,18 +58,16 @@ public class DataSave : Singleton<DataSave>
         for (int i = 0; i < GridManager.Instance.characterData.characters.Count; i++)
         {
             Psave = DeepCopy<Player>(GridManager.Instance.characterData.characters[i]);
-            tempPlayers.Add(Psave);
             tempPlayerSave.Add(Psave.name, Psave);
         }
 
         for (int i = 0; i < GridManager.Instance.enemyData.enemies.Count; i++)
         {
             Esave = DeepCopy<Enemy>(GridManager.Instance.enemyData.enemies[i]);
-            tempEnemies.Add(Esave);
             tempEnemySave.Add(Esave.name, Esave);
         }
     }
-   
+
     public void SaveData()
     {
         string tempNaame;
@@ -88,37 +75,54 @@ public class DataSave : Singleton<DataSave>
 
 
         foreach (var item in CreateManager.Instance.unitSave)
-        {          
-                valueSave.Add(item.Value);
-                keySave.Add(item.Key);
-               
+        {
+            valueSave.Add(item.Value);
+            keySave.Add(item.Key);
+
         }
 
-        for (int i = 0; i < valueSave.Count-1; i++)
+        for (int i = 0; i < valueSave.Count - 1; i++)
         {
-            for (int x = 0;x< valueSave.Count - 1 - i; x++)
+            for (int x = 0; x < valueSave.Count - 1 - i; x++)
             {
-                if (valueSave[x].unit.speed > valueSave[x+1].unit.speed)
+                if (valueSave[x].unit.speed > valueSave[x + 1].unit.speed)
                 {
                     tempCharacter = valueSave[x];
-                    valueSave[x] = valueSave[x+1];
-                    valueSave[x+1] = tempCharacter;
+                    valueSave[x] = valueSave[x + 1];
+                    valueSave[x + 1] = tempCharacter;
 
                     tempNaame = keySave[x];
                     keySave[x] = keySave[x + 1];
                     keySave[x + 1] = tempNaame;
-                        
+
 
                 }
             }
         }
         valueSave.Reverse();
         keySave.Reverse();
-    }
-    private void Update()
-    {
-       
+        roundCount++;
+        //说明执行完一次回合了
+
     }
 
-    
+    public List<Character> GetPlayerDataSave()
+    {
+        List<Character> result = new();
+        for (int i = 0; i < valueSave.Count; i++)
+            if (valueSave[i] is PlayerData)
+                result.Add(valueSave[i].unit);
+
+        return result;
+    }
+
+    public List<Character> GetEnemyDataSave()
+    {
+        List<Character> result = new();
+        for (int i = 0; i < valueSave.Count; i++)
+            if (valueSave[i] is EnemyData)
+                result.Add(valueSave[i].unit);
+
+        return result;
+    }
 }

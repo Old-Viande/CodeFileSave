@@ -45,6 +45,8 @@ public class GridManager : Singleton<GridManager>
     /// </summary>
     public float currentDistance;
 
+    public Vector2Int newRoomPos;
+
     //private bool canClick =false;
     private void Start()
     {
@@ -212,7 +214,7 @@ public class GridManager : Singleton<GridManager>
                     foreach (var item in skilleffect)
                     {
                         Debug.Log("skill effect " + " " + item.name);
-                        item.GetComponent<EnemyData>().heardMark.GetComponent<SpriteRenderer>().enabled = true;//在组件里渲染箭头                
+                        //item.GetComponent<EnemyData>().heardMark.GetComponent<SpriteRenderer>().enabled = true;//在组件里渲染箭头                
                     }
                     UpdataManager.Instance.skillLineOpen = false;
                     UpdataManager.Instance.skillMarkOpen = false;
@@ -248,6 +250,7 @@ public class GridManager : Singleton<GridManager>
         {
             EventPanel eventPanel = UIManager.Instance.PushPanel(UIPanelType.EventPanel) as EventPanel;
             eventPanel.UpdateRoomEvent(roomEvent);
+            RoomEventManager.Instance.ExecuteRoomEventEffect(roomEvent);
         }
     }
 
@@ -260,6 +263,7 @@ public class GridManager : Singleton<GridManager>
         roomGridmap.SetValue(x, z, roomGO);//要将生成的物体存入网格内
         RoomToStep(x, z);
         RoomBuild.Instance.CreateGrid(roomGridmap.GetWorldPosition(x, z));
+        newRoomPos = new Vector2Int(x, z);
         CheckEvent(roomGO);
     }
 
@@ -310,6 +314,14 @@ public class GridManager : Singleton<GridManager>
             }
         }
     }
+
+    public void GetRoomBound(int x, int z, out int minX, out int minZ, out int maxX, out int maxZ)
+    {
+        roomGridmap.GetGridRangePoints(x, z, out int _maxX, out int _minX, out int _maxZ, out int _minZ);
+        GridTranslateToSmall(_minX, _minZ, out minX, out minZ);
+        GridTranslateToSmall(_maxX, _maxZ, out maxX, out maxZ);
+    }
+
     public void CheckDoor(int x, int z)//现在只有一种房间类型，后续根据房间类型的增多需要进行修改
     {
         doorSave.Clear();

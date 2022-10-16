@@ -474,12 +474,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EventDataList:
-  - Name: Surprised!
-    Weight: 34.5
-  - Name: Boss is Coming!
-    Weight: 30.6
-  - Name: Something in the Dark
-    Weight: 0
+  - Name: Test
+    Weight: 100
 --- !u!1 &4762054481031321690
 GameObject:
   m_ObjectHideFlags: 0

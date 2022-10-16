@@ -43,7 +43,8 @@ public class RoomEvent
         public EventEffectWithoutTarget EventEffectWithoutTarget;
         public EventValueType EventEffectChangeValueType;
         public ValueChangeType EventEffectChangeValueChangeType;
-        public float EventEffectChangeValue;
+        public float EventEffectChangeValue1;
+        public int EventEffectChangeValue2;
     }
     public RoomEventEffectData RoomEventEffect; // TODO: make a list
     #endregion // 事件执行
@@ -66,8 +67,8 @@ public class RoomEvent
     }
     public SkillChangeType SkillChangeType;
     public SkillCountChangeType SkillCountChangeType;
-    public int SkillID;
-    public List<int> SkillIDList;
+    public string SkillName;
+    public List<string> SkillNameList;
     public SkillValueType SkillValueType;
     public SkillValueData SkillValue;
     #endregion // 技能相关
@@ -76,7 +77,7 @@ public class RoomEvent
     [System.Serializable]
     public struct EnemyCreateData
     {
-        public int ID;
+        public string Name;
         public int Count;
     }
     public List<EnemyCreateData> EnemyCreateDataList = new();
@@ -118,8 +119,8 @@ public class RoomEvent
         // 技能相关
         SkillChangeType = other.SkillChangeType;
         SkillCountChangeType = other.SkillCountChangeType;
-        SkillID = other.SkillID;
-        SkillIDList = other.SkillIDList;
+        SkillName = other.SkillName;
+        SkillNameList = other.SkillNameList;
         SkillValueType = other.SkillValueType;
         SkillValue = other.SkillValue;
 
@@ -170,9 +171,5 @@ public class RoomEvent
     #endregion // Editor Methods
 
     #region Runtime Methods
-    public void Execute()
-    {
-
-    }
     #endregion // Runtime Methods
 }

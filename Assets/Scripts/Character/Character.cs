@@ -9,9 +9,9 @@ public class Character
     public string UID;
 
     //[HideInInspector]
-	public float hp;
+    public float hp;
 
-	public float maxHp;
+    public float maxHp;
     /// <summary>
     /// 
     /// </summary>
@@ -24,9 +24,9 @@ public class Character
     public float defense;
 
     //[HideInInspector]
-	public int actionPoint;
+    public int actionPoint;
 
-	public int maxActionPoint;
+    public int maxActionPoint;
 
     public bool isPlayer;
 
@@ -48,4 +48,12 @@ public class Character
 
     public List<SkillData> skillSave = new List<SkillData>();
 
+    public SkillData GetSkillData(string name)
+    {
+        for (int i = 0; i < skillSave.Count; i++)
+            if (skillSave[i].skillName == name)
+                return skillSave[i];
+
+        return null;
+    }
 }

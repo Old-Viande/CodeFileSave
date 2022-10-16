@@ -13,7 +13,7 @@ public class EnemyData : CharacterData
     private int x2, z2;
     private int nodeListCount;
 
-    public Transform heardMark;
+   //public Transform heardMark;
     // Start is called before the first frame update
     public static T DeepCopy<T>(T obj)//从SO文件深拷贝数据
     {
@@ -23,7 +23,9 @@ public class EnemyData : CharacterData
     }
     void Start()
     {
-        heardMark = transform.Find("TopCanvas").Find("Mark");
+        //var topCanvas = transform.Find("TopCanvas");
+        //if (topCanvas != null)
+           // heardMark = topCanvas.Find("Mark");
         foreach (var a in GridManager.Instance.enemyData.enemies)
         {
             if (this.name.Contains(a.name))

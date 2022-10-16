@@ -131,7 +131,7 @@ public class SkillState : IState
     }
     public void OnExit() 
     {
-        DataSave.Instance.targetObj.GetComponent<PlayerData>().unit.actionPoint--;
+        DataSave.Instance.currentObj.GetComponent<PlayerData>().unit.actionPoint--;
         UpdataManager.Instance.skillUseButton = false;//退出技能时，将技能使用状态切换为关闭
         UIManager.Instance.PopPanel();//UI层关闭目前的UI
     }

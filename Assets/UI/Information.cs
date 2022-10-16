@@ -16,7 +16,7 @@ public class Information : MonoBehaviour
     //public GameObject Move;
     //public GameObject Attack;
     //public GameObject Defence;
-    private int roundcount=1;
+   
     public enum State
     {
         Idle,
@@ -39,11 +39,8 @@ public class Information : MonoBehaviour
         currentState = (State)character.currentState;
         float numb = (float)character.actionPoint / (float)character.maxActionPoint;
     
-        if (character.actionPoint == 0&& Input.GetMouseButtonUp(0))
-        {
-            roundcount++;
-        }
-        roundText.text = "Round £º" + roundcount;
+        
+        roundText.text = "Round £º" + DataSave.Instance.roundCount;
         bloodbar.GetComponent<Slider>().value = numb;
         bartext.text ="ActionPoint :"+ character.actionPoint + " / " + character.maxActionPoint;
         text.text = character.name;

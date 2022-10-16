@@ -240,10 +240,12 @@ public class RoomEventEditor : EditorWindow
                                         case EventValueType.Attack:
                                         case EventValueType.Defense:
                                         case EventValueType.Speed:
+                                            DrawValueChange(ref currentRoomEvent.RoomEventEffect.EventEffectChangeValueChangeType, ref currentRoomEvent.RoomEventEffect.EventEffectChangeValue1);
+                                            break;
                                         case EventValueType.ActionPoint:
                                         case EventValueType.MaxActionPoint:
                                         case EventValueType.MoveSpeed:
-                                            DrawValueChange(ref currentRoomEvent.RoomEventEffect.EventEffectChangeValueChangeType, ref currentRoomEvent.RoomEventEffect.EventEffectChangeValue);
+                                            DrawValueChange(ref currentRoomEvent.RoomEventEffect.EventEffectChangeValueChangeType, ref currentRoomEvent.RoomEventEffect.EventEffectChangeValue2);
                                             break;
                                         case EventValueType.SkillColdDown:
                                             EditorGUILayout.HelpBox("技能关联目前未实现！", MessageType.Warning);
@@ -376,8 +378,10 @@ public class RoomEventEditor : EditorWindow
                 switch (roomEvent.SkillCountChangeType)
                 {
                     case SkillCountChangeType.SelectAll:
-                    case SkillCountChangeType.SelectOne:
                         RenderSkillChangeReorderableList();
+                        break;
+                    case SkillCountChangeType.SelectOne:
+                        EditorGUILayout.HelpBox("多选一还未实现", MessageType.Warning);
                         break;
                     default:
                         break;
@@ -385,10 +389,19 @@ public class RoomEventEditor : EditorWindow
                 break;
             case SkillChangeType.ChangeValue:
                 string[] skillNames = SkillManager.Instance.GetAllSkillName();
+                int skillID = Array.IndexOf(skillNames, roomEvent.SkillName);
                 EditorGUI.BeginChangeCheck();
-                roomEvent.SkillID = EditorGUILayout.Popup("技能名称", roomEvent.SkillID, skillNames);
-                if (string.IsNullOrEmpty(roomEvent.SkillValue.Name) || EditorGUI.EndChangeCheck())
-                    roomEvent.UpdateSkillValue(skillNames[roomEvent.SkillID]);
+                skillID = EditorGUILayout.Popup("技能名称", skillID, skillNames);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    roomEvent.SkillName = skillNames[skillID];
+                    roomEvent.UpdateSkillValue(roomEvent.SkillName);
+                }
+                else if (string.IsNullOrEmpty(roomEvent.SkillValue.Name))
+                {
+                    roomEvent.SkillName = skillNames[0];
+                    roomEvent.UpdateSkillValue(skillNames[0]);
+                }
                 roomEvent.SkillValueType = (SkillValueType)EditorGUILayout.Popup("修改的数值", (int)roomEvent.SkillValueType, GetNames(typeof(SkillValueType)));
                 EditorGUI.indentLevel++;
                 switch (roomEvent.SkillValueType)
@@ -541,13 +554,17 @@ public class RoomEventEditor : EditorWindow
             {
                 SerializedProperty enemyCreateData = enemyCreateDataList.GetArrayElementAtIndex(index);
 
-                SerializedProperty id = enemyCreateData.FindPropertyRelative("ID");
+                SerializedProperty name = enemyCreateData.FindPropertyRelative("Name");
                 SerializedProperty count = enemyCreateData.FindPropertyRelative("Count");
 
                 Rect nameRect = new(rect.x, rect.y, rect.width, 18.0f);
                 Rect countRect = new(rect.x, rect.y + 20.0f, rect.width, 18.0f);
 
-                id.intValue = EditorGUI.Popup(nameRect, string.Format($"敌人对象 {index}"), id.intValue, m_AllEnemyName);
+                int id = Array.IndexOf(m_AllEnemyName, name.stringValue);
+                EditorGUI.BeginChangeCheck();
+                id = EditorGUI.Popup(nameRect, string.Format($"敌人对象 {index}"), id, m_AllEnemyName);
+                if (EditorGUI.EndChangeCheck())
+                    name.stringValue = m_AllEnemyName[id];
                 EditorGUI.PropertyField(countRect, count, new GUIContent("数量"));
             },
             elementHeightCallback = (index) =>
@@ -556,8 +573,8 @@ public class RoomEventEditor : EditorWindow
             }
         };
 
-        SerializedProperty skillIDList = m_CurrentRoomEventProperty.FindPropertyRelative("SkillIDList");
-        m_SkillChangeRL = new ReorderableList(m_SerializedObject, skillIDList, true, true, true, true)
+        SerializedProperty skillNameList = m_CurrentRoomEventProperty.FindPropertyRelative("SkillNameList");
+        m_SkillChangeRL = new ReorderableList(m_SerializedObject, skillNameList, true, true, true, true)
         {
             drawHeaderCallback = (rect) =>
             {
@@ -566,8 +583,13 @@ public class RoomEventEditor : EditorWindow
             },
             drawElementCallback = (rect, index, isActive, isFocused) =>
             {
-                SerializedProperty skillID = skillIDList.GetArrayElementAtIndex(index);
-                skillID.intValue = EditorGUI.Popup(new(rect.x, rect.y, rect.width, 18.0f), string.Format($"技能 {index}"), skillID.intValue, SkillManager.Instance.GetAllSkillName());
+                SerializedProperty skillName = skillNameList.GetArrayElementAtIndex(index);
+                string[] skillNames = SkillManager.Instance.GetAllSkillName();
+                int skillID = Array.IndexOf(skillNames, skillName.stringValue);
+                EditorGUI.BeginChangeCheck();
+                skillID = EditorGUI.Popup(new(rect.x, rect.y, rect.width, 18.0f), string.Format($"技能 {index}"), skillID, skillNames);
+                if (EditorGUI.EndChangeCheck())
+                    skillName.stringValue = skillNames[skillID];
             },
             elementHeightCallback = (index) =>
             {

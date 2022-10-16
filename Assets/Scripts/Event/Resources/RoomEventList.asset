@@ -30,40 +30,41 @@ MonoBehaviour:
       EventTriggerPreArg4: 0
     EventEffectFoldout: 1
     RoomEventEffect:
-      HasEventEffect: 0
-      EventTarget: 0
+      HasEventEffect: 1
+      EventTarget: 1
       EventTargetFilter: 0
       EventTargetCheckValueType: 0
       EventTargetCheckValueFilter: 0
       EventTargetFilterArg1: 0
       EventTargetFilterArg2: 0
       EventTargetFilterArg3: 0
-      EventEffectWithTarget: 0
-      EventEffectWithoutTarget: 0
+      EventEffectWithTarget: 2
+      EventEffectWithoutTarget: 2
       EventEffectChangeValueType: 0
       EventEffectChangeValueChangeType: 0
-      EventEffectChangeValue: 0
-    SkillChangeType: 0
-    SkillCountChangeType: 1
-    SkillID: 0
-    SkillIDList: 0100000002000000
+      EventEffectChangeValue1: 0
+      EventEffectChangeValue2: 0
+    SkillChangeType: 2
+    SkillCountChangeType: 0
+    SkillName: Attack
+    SkillNameList: []
     SkillValueType: 0
     SkillValue:
       LockState: 0
-      Name: 
+      Name: Attack
       Property: 0
       MaxProperty: 0
-      AttackRange: 0
+      AttackRange: 1.5
       SkillEffectRange: 0
-      OriginAttack: 0
-      ChooseType: 0
+      OriginAttack: 5
+      ChooseType: 1
       Shape: 0
       MaxUnitsChoose: 0
       ValueChangeType: 0
     EnemyCreateDataList:
-    - ID: 0
+    - Name: Eyeball
       Count: 3
-    - ID: 2
+    - Name: Boss
       Count: 1
     ButtonList:
     - Text: "\u597D\u7684"
@@ -93,7 +94,7 @@ MonoBehaviour:
     RoomEventTrigger:
       RoomEventEffectTrigger: 0
       RoomEventEffectTriggerArg: 0
-      EventTriggerPre: 4
+      EventTriggerPre: 5
       EventTriggerPreArg1: 0
       EventTriggerPreArg2: 0
       EventTriggerPreArg3: 3
@@ -112,11 +113,12 @@ MonoBehaviour:
       EventEffectWithoutTarget: 0
       EventEffectChangeValueType: 0
       EventEffectChangeValueChangeType: 0
-      EventEffectChangeValue: 0
+      EventEffectChangeValue1: 0
+      EventEffectChangeValue2: 0
     SkillChangeType: 0
     SkillCountChangeType: 0
-    SkillID: 0
-    SkillIDList: 
+    SkillName: 
+    SkillNameList: []
     SkillValueType: 0
     SkillValue:
       LockState: 0
@@ -131,9 +133,9 @@ MonoBehaviour:
       MaxUnitsChoose: 0
       ValueChangeType: 0
     EnemyCreateDataList:
-    - ID: 0
+    - Name: 
       Count: 3
-    - ID: 2
+    - Name: 
       Count: 1
     ButtonList:
     - Text: "\u51C6\u5907\u8FCE\u6218"
@@ -183,11 +185,121 @@ MonoBehaviour:
       EventEffectWithoutTarget: 0
       EventEffectChangeValueType: 0
       EventEffectChangeValueChangeType: 0
-      EventEffectChangeValue: 0
+      EventEffectChangeValue1: 0
+      EventEffectChangeValue2: 0
     SkillChangeType: 0
     SkillCountChangeType: 0
-    SkillID: 0
-    SkillIDList: 
+    SkillName: 
+    SkillNameList: []
+    SkillValueType: 0
+    SkillValue:
+      LockState: 0
+      Name: 
+      Property: 0
+      MaxProperty: 0
+      AttackRange: 0
+      SkillEffectRange: 0
+      OriginAttack: 0
+      ChooseType: 0
+      Shape: 0
+      MaxUnitsChoose: 0
+      ValueChangeType: 0
+    EnemyCreateDataList: []
+    ButtonList: []
+  - ID: 3
+    Name: Test
+    Description:
+    - a
+    RoomEventTriggerFoldout: 1
+    RoomEventTrigger:
+      RoomEventEffectTrigger: 0
+      RoomEventEffectTriggerArg: 0
+      EventTriggerPre: 0
+      EventTriggerPreArg1: 0
+      EventTriggerPreArg2: 0
+      EventTriggerPreArg3: 0
+      EventTriggerPreArg4: 0
+    EventEffectFoldout: 1
+    RoomEventEffect:
+      HasEventEffect: 1
+      EventTarget: 1
+      EventTargetFilter: 0
+      EventTargetCheckValueType: 0
+      EventTargetCheckValueFilter: 0
+      EventTargetFilterArg1: 0
+      EventTargetFilterArg2: 0
+      EventTargetFilterArg3: 0
+      EventEffectWithTarget: 2
+      EventEffectWithoutTarget: 2
+      EventEffectChangeValueType: 8
+      EventEffectChangeValueChangeType: 0
+      EventEffectChangeValue1: 0
+      EventEffectChangeValue2: 4
+    SkillChangeType: 1
+    SkillCountChangeType: 0
+    SkillName: Attack
+    SkillNameList:
+    - fireball
+    SkillValueType: 4
+    SkillValue:
+      LockState: 0
+      Name: Attack
+      Property: 0
+      MaxProperty: 0
+      AttackRange: 1.5
+      SkillEffectRange: 0
+      OriginAttack: 5
+      ChooseType: 1
+      Shape: 0
+      MaxUnitsChoose: 0
+      ValueChangeType: 0
+    EnemyCreateDataList:
+    - Name: Eyeball
+      Count: 1
+    - Name: Boss
+      Count: 1
+    ButtonList:
+    - Text: 1
+      ButtonCondition: 0
+      ButtonConditionValueType: 0
+      ButtonConditionValueFilter: 0
+      ButtonConditionArg1: 0
+      ButtonConditionArg2: 0
+      ButtonEvent:
+        m_PersistentCalls:
+          m_Calls: []
+  - ID: 4
+    Name: New Room Event 4
+    Description: []
+    RoomEventTriggerFoldout: 1
+    RoomEventTrigger:
+      RoomEventEffectTrigger: 0
+      RoomEventEffectTriggerArg: 0
+      EventTriggerPre: 0
+      EventTriggerPreArg1: 0
+      EventTriggerPreArg2: 0
+      EventTriggerPreArg3: 0
+      EventTriggerPreArg4: 0
+    EventEffectFoldout: 1
+    RoomEventEffect:
+      HasEventEffect: 1
+      EventTarget: 1
+      EventTargetFilter: 0
+      EventTargetCheckValueType: 0
+      EventTargetCheckValueFilter: 0
+      EventTargetFilterArg1: 0
+      EventTargetFilterArg2: 0
+      EventTargetFilterArg3: 0
+      EventEffectWithTarget: 2
+      EventEffectWithoutTarget: 0
+      EventEffectChangeValueType: 2
+      EventEffectChangeValueChangeType: 0
+      EventEffectChangeValue1: 0
+      EventEffectChangeValue2: 0
+    SkillChangeType: 0
+    SkillCountChangeType: 0
+    SkillName: 
+    SkillNameList: []
     SkillValueType: 0
     SkillValue:
       LockState: 0

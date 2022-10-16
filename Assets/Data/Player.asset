@@ -46,22 +46,5 @@ MonoBehaviour:
       maxcoldDownTime: 0
       countDown: 0
       maxcountDown: 0
-    - locked: 0
-      skillName: fireball
-      attackRange: 6
-      playSpeed: 0
-      skillLeve: 0
-      orginAttack: 4
-      skillEffectRange: 3
-      timelineAsset: {fileID: 11400000, guid: 3b1dedeeba19bc14090e7e5243c35f8e, type: 2}
-      currentSkillType: 1
-      currentSkillProperty: 1
-      currentSkillChoseType: 0
-      currentSkillShape: 0
-      maxUnitChose: 0
-      coldDownTime: 0
-      maxcoldDownTime: 0
-      countDown: 5
-      maxcountDown: 5
     mask: {fileID: 0}
     luck: 0
